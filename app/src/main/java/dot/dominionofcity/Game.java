@@ -36,4 +36,11 @@ public class Game {
     public void setGenerators(Generator[][] generators) {
         this.generators = generators;
     }
+
+
+
+    public void update() {
+        String url = "";
+        HttpTask postTask = new HttpTask(url, HttpTask.POST);
+    }
 }
