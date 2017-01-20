@@ -7,8 +7,8 @@ import java.util.ArrayList;
  */
 
 /*
-Team is inherited from ArrayList to store users as members and score attribute is added.
- */
+Team is inherited from ArrayList to store users as members.
+*/
 public class Team extends ArrayList{
     private int id;
     private int score;
