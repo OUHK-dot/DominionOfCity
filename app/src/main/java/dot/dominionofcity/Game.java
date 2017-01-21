@@ -37,10 +37,5 @@ public class Game {
         this.generators = generators;
     }
 
-
-
-    public void update() {
-        String url = "";
-        HttpTask postTask = new HttpTask(url, HttpTask.POST);
-    }
+    // TODO: 22/1/2017 get game information update from server 
 }

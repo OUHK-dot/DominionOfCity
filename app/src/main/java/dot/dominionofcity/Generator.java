@@ -57,11 +57,5 @@ public class Generator {
         this.occupant = occupant;
     }
 
-    public void occupied(Team occupant) {
-        HttpPostTask postTask = new HttpPostTask("");
-        String queryString = String.format("generator=%d&team=%d", id, occupant.getId());
-        postTask.execute(queryString);
-        setOccupant(occupant);
-        security++;
-    }
+    // TODO: 22/1/2017 send occupied signal to server 
 }
