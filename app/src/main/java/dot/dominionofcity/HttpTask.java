@@ -14,11 +14,13 @@ import java.util.Scanner;
  * Created by dixon on 20/1/2017.
  */
 
-public class HttpTask extends AsyncTask<String, String, String> {
+public abstract class HttpTask extends AsyncTask<String, Void, Boolean> {
     private String url = "";
     private int method;
     public static final int GET = 0;
     public static final int POST = 1;
+
+    private StringBuilder response;
 
     public HttpTask(String url) {
         this(url, GET);
@@ -28,15 +30,11 @@ public class HttpTask extends AsyncTask<String, String, String> {
         super();
         this.url = url;
         this.method = method;
+        response = new StringBuilder();
     }
 
     @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
-
-    @Override
-    protected String doInBackground(String... queryStrings) {
+    protected Boolean doInBackground(String... queryStrings) {
         try {
             URL url;
             InputStream is;
@@ -58,26 +56,19 @@ public class HttpTask extends AsyncTask<String, String, String> {
                 is = url.openStream();
             }
             Scanner scanner = new Scanner(is);
-            StringBuilder sb = new StringBuilder();
             while (scanner.hasNextLine()) {
-                sb.append(scanner.nextLine() + "\n");
+                response.append(scanner.nextLine() + "\n");
             }
             scanner.close();
+            doMoreInBackground();
             //onPostExecute(response)
-            return sb.toString();
+            return true;
 
         }
-        catch (IOException e) {}
-        return null;
+        catch (IOException ignored) {}
+        return false;
     }
 
-    @Override
-    protected void onProgressUpdate(String... params) {
-        super.onProgressUpdate(params);
-    }
-
-    @Override
-    protected void onPostExecute(String result) {
-        super.onPostExecute(result);
-    }
+    //extra task to do in background
+    protected void doMoreInBackground() {}
 }
