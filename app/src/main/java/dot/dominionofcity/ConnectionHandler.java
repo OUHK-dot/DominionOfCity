@@ -6,21 +6,55 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLConnection;
 import java.util.Scanner;
 
+/**
+ * This class implement HttpURLConnection to perform request and get back response
+ * To send GET request with query string, construct an instance with String url
+ * and call get(String query) without "?" at the beginning.
+ * To send POST request or GET request without dynamic query string, construct with
+ * URL or URL.openConnection() and call get(), post(), post(String data).
+ * Note: Connection can only be used once
+ *
+ * Example:
+ public boolean send2() {
+    ConnectionHandler handler;
+    try {
+        //connect url
+        handler = new ConnectionHandler(url.openConnection()) //use pre-set URL)
+            .useSession(getSharedPreferences("TEST", MODE_PRIVATE)); //set session available, use sharedPreferences to store it
+        String response = handler.post("messages=sth&name=someone");
+        Log.i("STH", response);
+        if (response.equals("{status:OK}")) return true;
+    } catch (java.io.IOException ignored) {}
+    return false;
+ }
+ */
+
 public class ConnectionHandler {
+    private String url;
     private String sessionId;
     private SharedPreferences sharedPreferences;
     public static final String SESSION_KEY = "SessionID";
     private HttpURLConnection connection;
 
-    public ConnectionHandler(SharedPreferences sharedPreferences, URLConnection connection) {
+    public ConnectionHandler(String url) {
+        this.url = url;
+    }
+
+    public ConnectionHandler(URL url) throws IOException {
+        this(url.openConnection());
+    }
+
+    public ConnectionHandler(URLConnection connection) {
         this.sharedPreferences = sharedPreferences;
         this.connection = (HttpURLConnection) connection;
     }
 
-    public ConnectionHandler useSession() {
+    public ConnectionHandler useSession(SharedPreferences sharedPreferences) {
+        this.sharedPreferences = sharedPreferences;
         sessionId = sharedPreferences.getString(SESSION_KEY, "");
         connection.addRequestProperty("Cookie", sessionId);
         return this;
@@ -48,8 +82,12 @@ public class ConnectionHandler {
         os.close();
         if (null != sessionId)
             storeSession();
-        connection.disconnect();
         return getResponse();
+    }
+
+    public String get(String query) throws IOException {
+        connection = (HttpURLConnection) new URL(url + "?" + query).openConnection();
+        return get();
     }
 
     public String get() throws IOException {
@@ -57,7 +95,6 @@ public class ConnectionHandler {
         connection.connect();
         if (null != sessionId)
             storeSession();
-        connection.disconnect();
         return getResponse();
     }
 
