@@ -43,8 +43,8 @@ public abstract class HttpTask extends AsyncTask<String, Void, Boolean> {
                 url = new URL(this.url);
                 URLConnection conn = url.openConnection();
                 conn.setDoOutput(true);
-                OutputStream os = conn.getOutputStream();
                 //send data
+                OutputStream os = conn.getOutputStream();
                 os.write(queryStrings[0].getBytes());
                 os.close();
                 //receive response
@@ -61,6 +61,7 @@ public abstract class HttpTask extends AsyncTask<String, Void, Boolean> {
             }
             scanner.close();
             doMoreInBackground();
+            publishProgress((Void) null);
             //onPostExecute(response)
             return true;
 
