@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     private ChatroomView chatroomView;
     private Message message;
     private static final String url = "http://come2jp.com/dominion";
+    private static final String SPNAME = "STH";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +22,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         chatroomView = (ChatroomView) findViewById(R.id.chatroom);
         try {
-            chatroom = new Chatroom(url, new Handler()) {
+            chatroom = new Chatroom(url, new Handler(),
+                    getSharedPreferences(SPNAME, MODE_PRIVATE)) {
                 @Override
                 void read(Message message) {
                     TextView messageView = new TextView(MainActivity.this);

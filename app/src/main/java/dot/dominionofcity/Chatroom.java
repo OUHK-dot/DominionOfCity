@@ -1,9 +1,11 @@
 package dot.dominionofcity;
 
+import android.content.SharedPreferences;
 import android.os.Handler;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -28,8 +30,13 @@ abstract class Chatroom {
     private Sender sender;
     private Receiver receiver;
     private static final ObjectMapper mapper = new ObjectMapper();
+    private SharedPreferences sf;
 
     Chatroom(String url, Handler handler) throws MalformedURLException {
+        this(url, handler, null);
+    }
+
+    Chatroom(String url, Handler handler, SharedPreferences sf) throws MalformedURLException {
         sender = new Sender(url + "/writeMessage.php");
         receiver = new Receiver(url + "/readMessage.php", handler) {
             @Override
@@ -37,6 +44,7 @@ abstract class Chatroom {
                 read(message);
             }
         };
+        this.sf = sf;
         sender.start();
         receiver.start();
     }
@@ -78,8 +86,12 @@ abstract class Chatroom {
                         } catch (InterruptedException ignored) {
                         }
                     }
-                    if (send())
-                        messages.clear();
+                    try {
+                        if (send())
+                            messages.clear();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -91,36 +103,40 @@ abstract class Chatroom {
             }
         }
 
-        private boolean send() {
-            HttpURLConnection conn;
-            OutputStream os;
-            InputStream is;
-            Scanner scanner;
-            StringBuilder response;
-            try {
-                //connect url
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setDoOutput(true);
-                //send data
-                os = conn.getOutputStream();
-                os.write("messages=".getBytes());
-                os.write(mapper.writeValueAsBytes(messages));
-                /*for (Message message : messages) {
-                    os.write(mapper.writeValueAsString(message).getBytes());
-                }*/
-                os.close();
-                //receive response
-                is = conn.getInputStream();
-                scanner = new Scanner(is);
-                response = new StringBuilder();
-                while (scanner.hasNextLine()) {
-                    response.append(scanner.nextLine() + "\n");
-                }
-                scanner.close();
-                if (response.toString().equals("{status:OK}")) return true;
-            } catch (java.io.IOException ignored) {
-            }
-            return false;
+        private boolean send() throws IOException {
+//            HttpURLConnection conn;
+//            OutputStream os;
+//            InputStream is;
+//            Scanner scanner;
+//            StringBuilder response;
+//            try {
+//                //connect url
+//                conn = (HttpURLConnection) url.openConnection();
+//                conn.setDoOutput(true);
+//                //send data
+//                os = conn.getOutputStream();
+//                os.write("messages=".getBytes());
+//                os.write(mapper.writeValueAsBytes(messages));
+//                /*for (Message message : messages) {
+//                    os.write(mapper.writeValueAsString(message).getBytes());
+//                }*/
+//                os.close();
+//                //receive response
+//                is = conn.getInputStream();
+//                scanner = new Scanner(is);
+//                response = new StringBuilder();
+//                while (scanner.hasNextLine()) {
+//                    response.append(scanner.nextLine() + "\n");
+//                }
+//                scanner.close();
+//                if (response.toString().equals("{status:OK}")) return true;
+//            } catch (java.io.IOException ignored) {
+//            }
+//            return false;
+            ConnectionHandler conn = new ConnectionHandler(url.openConnection())
+                    .useSession(sf);
+            String response = conn.post("messages=" + mapper.writeValueAsString(messages));
+            return !(null == response || !response.startsWith("{\"Status\":OK}"));
         }
     }
 
@@ -156,7 +172,11 @@ abstract class Chatroom {
         @Override
         public void run() {
             while (online) {
-                receive();
+                try {
+                    receive();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 try {
                     sleep(INTERVAL);
                 } catch (InterruptedException ignored) {
@@ -164,13 +184,22 @@ abstract class Chatroom {
             }
         }
 
-        void receive() {
-            ReceivePacket packet = null;
-            try {
-                packet = mapper.readValue(url, ReceivePacket.class);
-            } catch (IOException ignored) {
-            }
-            if (null == packet || packet.status.equals(Status.ERROR)) return;
+        void receive() throws IOException {
+//            try {
+//                packet = mapper.readValue(url, ReceivePacket.class);
+//            } catch (IOException ignored) {
+//            }
+//            if (null == packet || packet.status.equals(Status.ERROR)) return;
+//            for (Message message : packet.messages) {
+//                reader.setMessage(message);
+//                handler.post(reader);
+//            }
+            ConnectionHandler conn = new ConnectionHandler(url).useSession(sf);
+            ReceivePacket packet = mapper.readValue(
+                    conn.get("lastUpdate=" + lastUpdate),
+                    ReceivePacket.class
+            );
+            if (null == packet || !packet.status.equals(Status.OK)) return;
             for (Message message : packet.messages) {
                 reader.setMessage(message);
                 handler.post(reader);
