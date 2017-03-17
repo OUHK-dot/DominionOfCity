@@ -17,6 +17,7 @@ import java.util.Scanner;
  * To send POST request or GET request without dynamic query string, construct with
  * URL or URL.openConnection() and call get(), post(), post(String data).
  * Note: Connection can only be used once
+ * Note: Connection cannot be establish on Main Thread. Child thread should be used.
  *
  * Example:
  public boolean send2() {
