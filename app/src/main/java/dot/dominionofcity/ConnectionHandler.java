@@ -50,14 +50,14 @@ public class ConnectionHandler {
     }
 
     public ConnectionHandler(URLConnection connection) {
-        this.sharedPreferences = sharedPreferences;
         this.connection = (HttpURLConnection) connection;
     }
 
     public ConnectionHandler useSession(SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
         sessionId = sharedPreferences.getString(SESSION_KEY, "");
-        connection.addRequestProperty("Cookie", sessionId);
+        if (null != connection)
+            connection.addRequestProperty("Cookie", sessionId);
         return this;
     }
 
@@ -88,6 +88,7 @@ public class ConnectionHandler {
 
     public String get(String query) throws IOException {
         connection = (HttpURLConnection) new URL(url + "?" + query).openConnection();
+        connection.addRequestProperty("Cookie", sessionId);
         return get();
     }
 
