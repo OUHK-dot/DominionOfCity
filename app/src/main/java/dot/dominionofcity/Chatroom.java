@@ -15,6 +15,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -81,14 +82,14 @@ abstract class Chatroom {
     }
 
     Chatroom off() throws InterruptedException {
-        if (null != sender && null != receiver) {
-            Log.i(TAG, "Log off");
+        Log.i(TAG, "Log off");
+        if (null != sender && sender.getOnline()) {
             sender.offline();
+            sender.join();
+        }
+        if (null != receiver && receiver.getOnline()) {
             receiver.offline();
             sender.join();
-            receiver.join();
-            sender = null;
-            receiver = null;
         }
         return this;
     }
@@ -104,6 +105,10 @@ abstract class Chatroom {
 
         void offline() {
             online = false;
+        }
+
+        boolean getOnline() {
+            return online;
         }
 
         @Override
@@ -188,6 +193,10 @@ abstract class Chatroom {
 
         void offline() {
             online = false;
+        }
+
+        boolean getOnline() {
+            return online;
         }
 
         @Override
