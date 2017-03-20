@@ -1,6 +1,7 @@
 package dot.dominionofcity;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +41,7 @@ public class ConnectionHandler {
     private SharedPreferences sharedPreferences;
     public static final String SESSION_KEY = "SessionID";
     private HttpURLConnection connection;
+    private static final String TAG = "Internet";
 
     public ConnectionHandler(String url) {
         this.url = url;
@@ -74,6 +76,8 @@ public class ConnectionHandler {
     }
 
     public String post(byte[] data) throws IOException {
+        Log.v(TAG, connection.getURL().toString());
+        Log.v(TAG, "POST-> " + new String(data));
         //set method
         connection.setRequestMethod("POST");
         //output data
@@ -93,6 +97,7 @@ public class ConnectionHandler {
     }
 
     public String get() throws IOException {
+        Log.v(TAG, connection.getURL().toString());
         connection.setRequestMethod("GET");
         connection.connect();
         if (null != sessionId)
@@ -126,6 +131,7 @@ public class ConnectionHandler {
         }
         scanner.close();
         is.close();
+        Log.v(TAG, response.toString());
         return response.toString();
     }
 }

@@ -1,13 +1,6 @@
 package dot.dominionofcity;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.net.MalformedURLException;
 
@@ -26,6 +18,7 @@ public class ChatroomView extends LinearLayout {
             ViewGroup.LayoutParams.WRAP_CONTENT
     );
     private EditText enterMessage;
+    private Button submit;
 
     public void addMessage(View view) {
         addMessage(view, defaultMessageParams);
@@ -49,8 +42,12 @@ public class ChatroomView extends LinearLayout {
         return message;
     }
 
-    public View getSend() {
-        return this.findViewById(R.id.send);
+    public Button getSubmit() {
+        return submit;
+    }
+
+    public void setSubmitListerner(OnClickListener listener) {
+        submit.setOnClickListener(listener);
     }
 
     public ChatroomView(Context context) throws MalformedURLException {
@@ -76,5 +73,6 @@ public class ChatroomView extends LinearLayout {
         inflater.inflate(R.layout.chatroom_view, this, true);
         messageArea = (LinearLayout) this.findViewById(R.id.message_area);
         enterMessage = (EditText) this.findViewById(R.id.enter_message);
+        submit = (Button) this.findViewById(R.id.submit);
     }
 }

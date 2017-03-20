@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Dominion of City</string>
+    <string name="send">Send</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
+    <string name="name">Name</string>
+    <string name="dixon">Dixon</string>
+    <string name="_20002">20002</string>
+    <string name="room">Room</string>
+    <string name="_2">2</string>
+    <string name="id">ID</string>
+    <string name="session">Session</string>
 </resources>
