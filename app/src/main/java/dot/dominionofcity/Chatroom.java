@@ -1,67 +1,134 @@
 package dot.dominionofcity;
 
+import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.RelativeLayout;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 enum Status {OK, WARNING, ERROR}
 
-abstract class Chatroom {
+public /*abstract*/ class Chatroom {
     private User me;
     private Sender sender;
     private final List<Message> outMessages;
     private Receiver receiver;
     private int receivedNo;
-    private static final ObjectMapper mapper = new ObjectMapper();
     private String url;
-    private Handler handler;
+    //private Handler handler;
     private SharedPreferences sf;
+    private Context context;
+    private ChatroomView chatroomView;
+    private static final ObjectMapper mapper = new ObjectMapper();
     private static final String TAG = "Chatroom";
 
-    Chatroom(User me, String url, Handler handler) throws MalformedURLException {
-        this(me, url, handler, null);
+//    Chatroom(User me, String url, Handler handler) throws MalformedURLException {
+//        this(me, url, handler, null);
+//    }
+//
+//    Chatroom(User me, String url, Handler handler, SharedPreferences sf) throws MalformedURLException {
+//        Log.i(TAG, "Set up");
+//        this.me = me;
+//        this.url = url;
+//        this.handler = handler;
+//        this.sf = sf;
+//        sender = new Sender(url + "/writeMessage.php");
+//        outMessages = new ArrayList<>();
+//        receiver = new Receiver(url + "/readMessage.php", handler) {
+//            @Override
+//            void read(Message message) {
+//                Chatroom.this.read(message);
+//            }
+//        };
+//        receivedNo = 0;
+//    }
+
+    Chatroom(Context context, String url, ChatroomView chatroomView)
+            throws MalformedURLException {
+        this(context, url, chatroomView, null);
     }
 
-    Chatroom(User me, String url, Handler handler, SharedPreferences sf) throws MalformedURLException {
+    Chatroom(Context context, String url, final ChatroomView chatroomView,
+             SharedPreferences sf) throws MalformedURLException {
         Log.i(TAG, "Set up");
-        this.me = me;
+        this.context = context;
         this.url = url;
-        this.handler = handler;
+        this.chatroomView = chatroomView;
         this.sf = sf;
-        sender = new Sender(url + "/writeMessage.php");
+//        sender = new Sender(url + "/writeMessage.php");
         outMessages = new ArrayList<>();
-        receiver = new Receiver(url + "/readMessage.php", handler) {
-            @Override
-            void read(Message message) {
-                Chatroom.this.read(message);
-            }
-        };
+//        receiver = new Receiver(url + "/readMessage.php") {
+//            @Override
+//            void read(Message message) {
+//                Chatroom.this.read(message);
+//            }
+//        };
+//        receiver = new Receiver(url + "/readMessage.php");
         receivedNo = 0;
+        chatroomView.setSubmitListerner(new View.OnClickListener() {
+            private Message message = new Message(null, null, null);
+            @Override
+            public void onClick(View view) {
+                message.setContent(chatroomView.getMessage());
+                message.setMode(chatroomView.getMode());
+                if (message.getMode().equals(Mode.PERSON)) {
+                    message.setReceiver(chatroomView.getReceiver());
+                }
+                enter(message);
+            }
+        });
     }
 
-    public void setMe(User me) {
+//    public Chatroom with(@Nullable Context context, final ChatroomView chatroomView) {
+//        chatroomView.setSubmitListerner(new View.OnClickListener() {
+//            private Message message = new Message(null, null, null);
+//            @Override
+//            public void onClick(View view) {
+//                message.setContent(chatroomView.getMessage());
+//                message.setMode(chatroomView.getMode());
+//                if (message.getMode().equals(Mode.PERSON)) {
+//                    message.setReceiver(chatroomView.getReceiver());
+//                }
+//                enter(message);
+//            }
+//        });
+//        return this;
+//    }
+
+    public Chatroom setMe(User me) {
         this.me = me;
+        return this;
     }
 
-    abstract void read(Message message);
+    //abstract void read(Message message);
 
-    void enter(Message message) {
+//    private void read(final Message message) {
+//        MessageView messageView = new MessageView(context
+//        ).initMessage(message);
+//        chatroomView.addMessage(messageView);
+//    }
+
+    private void read(final MessageRelationPair message) {
+        chatroomView.post(new Runnable() {
+            @Override
+            public void run() {
+                MessageView messageView = new MessageView(context
+                ).initMessage(message.getMessage(), message.getRelation());
+                chatroomView.addMessage(messageView);
+            }
+        });
+    }
+
+    private void enter(Message message) {
         Log.v(TAG, "Out-> " + message);
         sender.enter(message);
     }
@@ -70,12 +137,14 @@ abstract class Chatroom {
         off();
         Log.i(TAG, "Log on");
         sender = new Sender(url + "/writeMessage.php");
-        receiver = new Receiver(url + "/readMessage.php", handler) {
-            @Override
-            void read(Message message) {
-                Chatroom.this.read(message);
-            }
-        };
+        //receiver = new Receiver(url + "/readMessage.php", handler) {
+//        receiver = new Receiver(url + "/readMessage.php") {
+//            @Override
+//            void read(Message message) {
+//                Chatroom.this.read(message);
+//            }
+//        };
+        receiver = new Receiver(url + "/readMessage.php");
         sender.start();
         receiver.start();
         return this;
@@ -170,26 +239,35 @@ abstract class Chatroom {
 //            } catch (java.io.IOException ignored) {
 //            }
 //            return false;
-            ConnectionHandler conn = new ConnectionHandler(url.openConnection())
+            ConnectionHandler conn =
+                    new ConnectionHandler(url.openConnection())
                     .useSession(sf);
-            String response = conn.post(mapper.writeValueAsString(outMessages));
-            return !(null == response || !response.startsWith("{\"status\":\"OK\"}"));
+            String response = conn.post(
+                    mapper.writeValueAsString(outMessages)
+            );
+            return !(null == response ||
+                    !response.startsWith("{\"status\":\"OK\"}"));
         }
     }
 
-    private abstract class Receiver extends Thread {
+    private /*abstract*/ class Receiver extends Thread {
         private String url;
         private static final int INTERVAL = 1000;
         private Boolean online;
-        private final Handler handler;
+        //private final Handler handler;
 
-        Receiver(String url, Handler handler) throws MalformedURLException {
+//        Receiver(String url, Handler handler) throws MalformedURLException {
+//            this.url = url;
+//            this.handler = handler;
+//            online = true;
+//        }
+
+        Receiver(String url) throws MalformedURLException {
             this.url = url;
-            this.handler = handler;
             online = true;
         }
 
-        abstract void read(Message message);
+//        abstract void read(Message message);
 
         void offline() {
             online = false;
@@ -225,162 +303,112 @@ abstract class Chatroom {
 //                handler.post(reader);
 //            }
 
-            ConnectionHandler conn = new ConnectionHandler(url).useSession(sf);
+            ConnectionHandler conn = new ConnectionHandler(url)
+                    .useSession(sf);
             String response = conn.get("start=" + receivedNo);
             ReceivePacket packet = mapper.readValue(
                     response,
                     ReceivePacket.class
             );
-            if (null == packet || !packet.status.equals(Status.OK)) return;
-            Log.v(TAG, "No. of message-> " + packet.messages.size());
-            for (Message message : packet.messages) {
-                message.setSelf(me);
-                Log.v(TAG, "In-> " + message);
+            if (null == packet || !packet.getStatus().equals(Status.OK))
+                return;
+            Log.v(TAG, "No. of message-> " + packet.getMessages().size());
+            for (MessageRelationPair message :
+                    packet.getMessages()) {
+                message.getMessage().setSelf(me);
+                Log.v(TAG, "In-> " + message.getMessage());
                 //reader.setMessage(message);
-                handler.post(new Reader(message) {
-
-                    @Override
-                    public void run() {
-                        if (message != null)
-                            read(message);
-                    }
-                });
+//                handler.post(new Runnable() {
+//
+//                    @Override
+//                    public void run() {
+//                        read(message);
+//                    }
+//                });
+//                chatroomView.post(new Runnable() {
+//
+//                    @Override
+//                    public void run() {
+//                        read(message);
+//                    }
+//                });
+                Chatroom.this.read(message);
             }
-            receivedNo = packet.readNo;
+            receivedNo = packet.getReadNo();
         }
     }
 
-    private abstract class Reader implements Runnable {
-        protected Message message = null;
-
-        Reader(Message message) {
-            this.message = message;
-        }
-
-        public Message getMessage() {
-            return message;
-        }
-
-        void setMessage(Message message) {
-            this.message = message;
-        }
-    }
+//    private abstract class Reader implements Runnable {
+//        protected Message message = null;
+//
+//        Reader(Message message) {
+//            this.message = message;
+//        }
+//
+//        public Message getMessage() {
+//            return message;
+//        }
+//
+//        void setMessage(Message message) {
+//            this.message = message;
+//        }
+//    }
 }
 
-enum Mode {PERSON, TEAM, ROOM}
-
 @JsonIgnoreProperties(ignoreUnknown=true)
-class Message {
-    private User sender;
-    private String content;
-    private Mode mode;
-    private User receiver;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date sendTime;
-    private static final SimpleDateFormat dateFormat =
-            new java.text.SimpleDateFormat("MM-dd HH:mm", Locale.getDefault());
+class MessageRelationPair {
+    private Message message;
+    private Relation relation;
 
-    Message() {}
+    MessageRelationPair() {}
 
-    Message(User sender) {
-        this(sender, null, null, null, null);
+    MessageRelationPair(Message message, Relation relation) {
+        this.message = message;
+        this.relation = relation;
     }
 
-    Message(User sender, String content, Mode mode) {
-        this(sender, content, mode, null, null);
+    public Message getMessage() {
+        return message;
     }
 
-    Message(User sender, String content, Mode mode, User receiver) {
-        this(sender, content, mode, receiver, null);
+    public void setMessage(Message message) {
+        this.message = message;
     }
 
-    Message(@NotNull User sender, String content, Mode mode,
-            User receiver, Date sendTime){
-        this.sender = sender;
-        this.content = content;
-        this.mode = mode;
-        this.receiver = receiver;
-        this.sendTime = sendTime;
+    public Relation getRelation() {
+        return relation;
     }
 
-    public User getSender() {
-        return sender;
-    }
-
-    public void setSender(User sender) {
-        this.sender = sender;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Mode getMode() {
-        return mode;
-    }
-
-    public void setMode(Mode mode) {
-        this.mode = mode;
-    }
-
-    public User getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
-    }
-
-    public void setSelf(User me) {
-        if (sender.getId() == me.getId())
-            sender.setName(me.getName());
-        if (mode.equals(Mode.PERSON) &&
-                receiver.getId() == me.getId())
-            receiver.setName(me.getName());
-    }
-
-    public Date getSendTime() {
-        return sendTime;
-    }
-
-    public void setSendTime(Date sendTime) {
-        this.sendTime = sendTime;
-    }
-
-    @Override
-    public String toString() {
-        String time = null;
-        if (null != sendTime)
-            time = dateFormat.format(sendTime);
-        switch (mode) {
-            case PERSON:
-                return String.format("%s->%s: %s @%s", sender.getName(), receiver.getName(), content, time);
-            case TEAM:
-                return String.format("%s->%s: %s @%s", sender.getName(), Mode.TEAM, content, time);
-            default:
-                return String.format("%s->%s: %s @%s", sender.getName(), Mode.ROOM, content, time);
-        }
+    public void setRelation(Relation relation) {
+        this.relation = relation;
     }
 }
 
 @JsonIgnoreProperties(ignoreUnknown=true)
-class ReceivePacket{
-    Status status;
-    List<Message> messages;
-    int readNo;
+class ReceivePacket {
+    private Status status;
+    //private List<Message> messages;
+    private List<MessageRelationPair> messages;
+    private int readNo;
 
-    ReceivePacket() {
-        messages = new ArrayList<>();
-    }
+//    ReceivePacket() {
+//        messages = new ArrayList<>();
+//    }
 
-    ReceivePacket(Status status, List<Message> messages, int readNo) {
+//    ReceivePacket(Status status, List<Message> messages, int readNo) {
+//        this.status = status;
+//        this.messages = messages;
+//        this.readNo = readNo;
+//    }
+
+    ReceivePacket(Status status, List<MessageRelationPair> messages, int readNo) {
         this.status = status;
         this.messages = messages;
         this.readNo = readNo;
+    }
+
+    ReceivePacket() {
+        messages = new ArrayList<>();
     }
 
     public Status getStatus() {
@@ -391,11 +419,19 @@ class ReceivePacket{
         this.status = status;
     }
 
-    public List<Message> getMessages() {
+//    public List<Message> getMessages() {
+//        return messages;
+//    }
+
+    public List<MessageRelationPair> getMessages() {
         return messages;
     }
 
-    public void setMessages(List<Message> messages) {
+//    public void setMessages(List<Message> messages) {
+//        this.messages = messages;
+//    }
+
+    public void setMessages(List<MessageRelationPair> messages) {
         this.messages = messages;
     }
 

@@ -1,5 +1,7 @@
 package dot.dominionofcity;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,39 +17,38 @@ import java.net.URL;
 
 public class ChatroomActivity extends AppCompatActivity {
     private Chatroom chatroom;
-    private ChatroomView chatroomView;
-    private Message outMessage;
+//    private ChatroomView chatroomView;
+//    private Message outMessage;
     private static final String url = "http://come2jp.com/dominion";
     private static final String SPNAME = "STH";
-    private User me;
+//    private User me;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatroom);
-        chatroomView = (ChatroomView) findViewById(R.id.chatroom);
-        me = new User(2, "Dixon");
+
+        //chatroomView = (ChatroomView) findViewById(R.id.chatroom);
+//        me = new User(2, "Dixon");
         try {
-            chatroom = new Chatroom(me, url, new Handler(),
-                    getSharedPreferences(SPNAME, MODE_PRIVATE)) {
-                @Override
-                void read(Message message) {
-                    TextView messageView = new TextView(ChatroomActivity.this);
-                    messageView.setText(message.toString());
-                    chatroomView.addMessage(messageView);
-                }
-            };
+//            chatroom = new Chatroom(me, url, new Handler(),
+//                    getSharedPreferences(SPNAME, MODE_PRIVATE)) {
+//                @Override
+//                void read(Message message) {
+////                    TextView messageView = new TextView(ChatroomActivity.this);
+////                    messageView.setText(message.toString());
+//                    MessageView messageView = new MessageView(
+//                            ChatroomActivity.this
+//                    ).initMessage(message);
+//                    chatroomView.addMessage(messageView);
+//                }
+//            }.with(this, chatroomView);
+            chatroom = new Chatroom(this, url,
+                    (ChatroomView) findViewById(R.id.chatroom),
+                    getSharedPreferences(SPNAME, MODE_PRIVATE));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        outMessage = new Message(new User(2, "Dixon"), null, Mode.TEAM);
-        chatroomView.setSubmitListerner(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                outMessage.setContent(chatroomView.getMessage());
-                chatroom.enter(outMessage);
-            }
-        });
     }
 
     public void session(View view) {
@@ -60,7 +61,7 @@ public class ChatroomActivity extends AppCompatActivity {
         );
         User me = new User(uid, name);
         chatroom.setMe(me);
-        outMessage.setSender(me);
+//        outMessage.setSender(me);
         Thread netThread = new Thread() {
             @Override
             public void run() {
@@ -78,16 +79,8 @@ public class ChatroomActivity extends AppCompatActivity {
 
     public void toggle(View view) throws MalformedURLException, InterruptedException {
         if (((ToggleButton) view).isChecked())
-            start(null);
-        else stop(null);
-    }
-
-    public void start(View view) throws MalformedURLException, InterruptedException {
-        chatroom.on();
-    }
-
-    public void stop(View view) throws InterruptedException {
-        chatroom.off();
+            chatroom.on();
+        else chatroom.off();
     }
 
 //    public void start(View view) {

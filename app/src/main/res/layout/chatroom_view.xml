@@ -1,18 +1,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/chatroom_bg" >
 
     <ScrollView
+        android:id="@+id/message_window"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" >
+        android:layout_weight="1"
+        android:background="#495c6f" >
 
         <LinearLayout
-            android:id="@+id/message_area"
-            android:orientation="vertical"
+            android:id="@+id/message_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <dot.dominionofcity.MessageView
+                android:layout_width="232dp"
+                android:layout_height="wrap_content">
+
+            </dot.dominionofcity.MessageView>
+        </LinearLayout>
 
     </ScrollView>
 
@@ -20,6 +30,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/receiver"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
 
         <EditText
             android:id="@+id/enter_message"
