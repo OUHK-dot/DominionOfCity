@@ -76,8 +76,8 @@ public class ConnectionHandler {
     }
 
     public String post(byte[] data) throws IOException {
-        Log.v(TAG, connection.getURL().toString());
-        Log.v(TAG, "POST-> " + new String(data));
+        Log.v(TAG, "POST-> " + connection.getURL().toString());
+        Log.v(TAG, "DATA-> " + new String(data));
         //set method
         connection.setRequestMethod("POST");
         //output data
@@ -97,7 +97,7 @@ public class ConnectionHandler {
     }
 
     public String get() throws IOException {
-        Log.v(TAG, connection.getURL().toString());
+        Log.v(TAG, "GET-> " + connection.getURL().toString());
         connection.setRequestMethod("GET");
         connection.connect();
         if (null != sessionId)

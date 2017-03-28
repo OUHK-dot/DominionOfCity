@@ -17,11 +17,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <dot.dominionofcity.MessageView
-                android:layout_width="232dp"
-                android:layout_height="wrap_content">
-
-            </dot.dominionofcity.MessageView>
         </LinearLayout>
 
     </ScrollView>

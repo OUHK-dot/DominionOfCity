@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +24,7 @@ public /*abstract*/ class Chatroom {
     private int receivedNo;
     private String url;
     //private Handler handler;
-    private SharedPreferences sf;
+    private SharedPreferences sharedPref;
     private Context context;
     private ChatroomView chatroomView;
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -58,12 +57,12 @@ public /*abstract*/ class Chatroom {
     }
 
     Chatroom(Context context, String url, final ChatroomView chatroomView,
-             SharedPreferences sf) throws MalformedURLException {
+             SharedPreferences sharedPref) throws MalformedURLException {
         Log.i(TAG, "Set up");
         this.context = context;
         this.url = url;
         this.chatroomView = chatroomView;
-        this.sf = sf;
+        this.sharedPref = sharedPref;
 //        sender = new Sender(url + "/writeMessage.php");
         outMessages = new ArrayList<>();
 //        receiver = new Receiver(url + "/readMessage.php") {
@@ -128,7 +127,7 @@ public /*abstract*/ class Chatroom {
         });
     }
 
-    private void enter(Message message) {
+    public void enter(Message message) {
         Log.v(TAG, "Out-> " + message);
         sender.enter(message);
     }
@@ -241,7 +240,7 @@ public /*abstract*/ class Chatroom {
 //            return false;
             ConnectionHandler conn =
                     new ConnectionHandler(url.openConnection())
-                    .useSession(sf);
+                    .useSession(sharedPref);
             String response = conn.post(
                     mapper.writeValueAsString(outMessages)
             );
@@ -304,7 +303,7 @@ public /*abstract*/ class Chatroom {
 //            }
 
             ConnectionHandler conn = new ConnectionHandler(url)
-                    .useSession(sf);
+                    .useSession(sharedPref);
             String response = conn.get("start=" + receivedNo);
             ReceivePacket packet = mapper.readValue(
                     response,
@@ -315,7 +314,7 @@ public /*abstract*/ class Chatroom {
             Log.v(TAG, "No. of message-> " + packet.getMessages().size());
             for (MessageRelationPair message :
                     packet.getMessages()) {
-                message.getMessage().setSelf(me);
+                //message.getMessage().setSelf(me);
                 Log.v(TAG, "In-> " + message.getMessage());
                 //reader.setMessage(message);
 //                handler.post(new Runnable() {

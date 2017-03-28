@@ -19,10 +19,10 @@ import java.net.MalformedURLException;
 public class ChatroomView extends LinearLayout {
     private ScrollView messageWindow;
     private LinearLayout messageList;
-    static final LayoutParams defaultMessageParams = new LayoutParams(
-            LayoutParams.WRAP_CONTENT,
-            LayoutParams.WRAP_CONTENT
-    );
+//    static final LayoutParams defaultMessageParams = new LayoutParams(
+//            LayoutParams.WRAP_CONTENT,
+//            LayoutParams.WRAP_CONTENT
+//    );
     private Spinner modeSpinner;
     private TextView receiverName;
     private User receiver;
@@ -78,12 +78,22 @@ public class ChatroomView extends LinearLayout {
         handler = new Handler();
     }
 
-    public void addMessage(View view) {
-        addMessage(view, defaultMessageParams);
-    }
+//    public void addMessage(View view) {
+//        addMessage(view, defaultMessageParams);
+//    }
+//
+//    public void addMessage(View view, LayoutParams params) {
+//        messageList.addView(view, params);
+//        handler.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                messageWindow.fullScroll(ScrollView.FOCUS_DOWN);
+//            }
+//        });
+//    }
 
-    public void addMessage(View view, LayoutParams params) {
-        messageList.addView(view, params);
+    public void addMessage(View view) {
+        messageList.addView(view);
         handler.post(new Runnable() {
             @Override
             public void run() {

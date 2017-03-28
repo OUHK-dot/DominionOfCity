@@ -4,11 +4,13 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-enum Relation {SOMEONE, SELF, GREEN, MAGENTA}
+// I => User of this device
+enum Relation {SOMEONE, I, A, B}
 
 public class MessageView extends RelativeLayout {
     private Message message;
@@ -61,17 +63,21 @@ public class MessageView extends RelativeLayout {
             case SOMEONE:
                 nameColor = getResources().getColor(R.color.white);
                 break;
-            case SELF:
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) this.getLayoutParams();
+            case I:
+                LinearLayout.LayoutParams params =
+                        new LinearLayout.LayoutParams(
+                                LayoutParams.WRAP_CONTENT,
+                                LayoutParams.WRAP_CONTENT
+                        );
                 params.gravity = Gravity.RIGHT;
                 params.gravity = Gravity.END;
                 this.setLayoutParams(params);
                 nameColor = getResources().getColor(R.color.blue);
                 break;
-            case GREEN:
+            case A:
                 nameColor = getResources().getColor(R.color.green);
                 break;
-            case MAGENTA:
+            case B:
             default:
                 nameColor = getResources().getColor(R.color.magenta);
                 break;
@@ -91,10 +97,10 @@ public class MessageView extends RelativeLayout {
                 break;
             case TEAM:
                 switch (relation) {
-                    case GREEN:
+                    case A:
                         modeColor = getResources().getColor(R.color.green);
                         break;
-                    case MAGENTA:
+                    case B:
                     default:
                         modeColor = getResources().getColor(R.color.magenta);
                         break;
