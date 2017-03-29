@@ -10,6 +10,8 @@
     <string name="_2">2</string>
     <string name="id">ID</string>
     <string name="session">Session</string>
+    <string name="notify">Notify</string>
+    <string name="chatroom_notification_title">Dominion of City Message</string>
     <string-array name="mode">
         <item>Team</item>
         <item>Room</item>

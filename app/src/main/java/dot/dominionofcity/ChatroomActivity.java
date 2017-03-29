@@ -1,14 +1,10 @@
 package dot.dominionofcity;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.io.IOException;
@@ -55,7 +51,7 @@ public class ChatroomActivity extends AppCompatActivity {
         final int uid = Integer.parseInt(
                 ((EditText) findViewById(R.id.uid)).getText().toString()
         );
-        String name = ((EditText) findViewById(R.id.name)).getText().toString();
+        String name = ((EditText) findViewById(R.id.chatroom_notification_sender_name)).getText().toString();
         final int rid = Integer.parseInt(
                 ((EditText) findViewById(R.id.rid)).getText().toString()
         );
@@ -154,4 +150,57 @@ public class ChatroomActivity extends AppCompatActivity {
 //        }
 //        readNo = packet.readNo;
 //    }
+
+//    public void noti(View view) {
+//        int notifyID = 1;
+//
+//        Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
+//        String[] lines = new String[] { "magiclen.org 發了一篇新文章", "今天天氣是晴天", "sthklsalnfk", "skrsldfknskslrs", "dkfnringnlfinh" };
+//        inboxStyle.setBigContentTitle("Dominion of City Chatroom");
+//        inboxStyle.setSummaryText("more message");
+//        for (int i = 0; i < lines.length; i++) {
+//            inboxStyle.addLine(String.format(Locale.getDefault(), "%d: %s", i + 1, lines[i]));
+//        }
+//
+//        // Creates an Intent for the Activity
+//        Intent notifyIntent = new Intent(ChatroomActivity.this, ChatroomActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+////        TaskStackBuilder stackBuilder = TaskStackBuilder.create(ChatroomActivity.this);
+////        // Adds the back stack
+////        stackBuilder.addParentStack(ChatroomActivity.class);
+////        // Adds the Intent to the top of the stack
+////        stackBuilder.addNextIntent(notifyIntent);
+////        // Gets a PendingIntent containing the entire back stack
+////        PendingIntent notifyPendingIntent =
+////                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        PendingIntent pendingIntent = PendingIntent.getActivity(
+//                ChatroomActivity.this, 0,
+//                notifyIntent,
+//                PendingIntent.FLAG_CANCEL_CURRENT
+//        );
+//
+//        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//        Notification.Builder builder = new Notification.Builder(this)
+//                .setSmallIcon(R.color.blue)
+//                .setContentTitle("Dominion of City Chatroom")
+//                .setContentText("New message")
+//                .setStyle(inboxStyle)
+//                .setDefaults(Notification.DEFAULT_VIBRATE)
+//                //.setContentIntent(pendingIntent)
+//                .setContentIntent(pendingIntent)
+//                ;//.setAutoCancel(true);
+//        notificationManager.beep(notifyID, builder.build()); //send notification
+//    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        chatroom.setBeeperOn(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        chatroom.setBeeperOn(false);
+    }
 }

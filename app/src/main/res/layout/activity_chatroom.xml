@@ -13,7 +13,7 @@
     <dot.dominionofcity.ChatroomView
         android:id="@+id/chatroom"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="380dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -46,7 +46,7 @@
         android:layout_toEndOf="@+id/uid" />
 
     <EditText
-        android:id="@+id/name"
+        android:id="@+id/chatroom_notification_sender_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dixon"
@@ -60,8 +60,8 @@
         android:layout_height="wrap_content"
         android:text="@string/room"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/name"
-        android:layout_toEndOf="@+id/name" />
+        android:layout_toRightOf="@+id/chatroom_notification_sender_name"
+        android:layout_toEndOf="@+id/chatroom_notification_sender_name" />
 
     <EditText
         android:id="@+id/rid"
@@ -92,5 +92,15 @@
         android:onClick="toggle"
         android:textOff="@string/off"
         android:textOn="@string/on" />
+
+    <Button
+        android:id="@+id/notify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rid"
+        android:layout_toEndOf="@+id/toggleButton"
+        android:layout_toRightOf="@+id/toggleButton"
+        android:onClick="noti"
+        android:text="@string/notify" />
 
 </RelativeLayout>

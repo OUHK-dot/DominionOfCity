@@ -94,12 +94,15 @@ public class ChatroomView extends LinearLayout {
 
     public void addMessage(View view) {
         messageList.addView(view);
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                messageWindow.fullScroll(ScrollView.FOCUS_DOWN);
-            }
-        });
+        if (messageList.getMeasuredHeight() <= messageWindow.getScrollY() +
+                messageWindow.getHeight()) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    messageWindow.fullScroll(ScrollView.FOCUS_DOWN);
+                }
+            });
+        }
     }
 
     public void removeMessage(View view) {

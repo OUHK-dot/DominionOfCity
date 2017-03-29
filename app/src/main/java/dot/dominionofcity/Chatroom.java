@@ -30,6 +30,15 @@ public /*abstract*/ class Chatroom {
     private static final ObjectMapper mapper = new ObjectMapper();
     private static final String TAG = "Chatroom";
 
+//    private static final int notifyID = 69;
+//    private boolean aware;
+//    private Notification.InboxStyle notificationContent;
+////    private RemoteViews notificationLayout;
+//    private Notification.Builder notificationBuilder;
+//    private NotificationManager notificationManager;
+//    private int notificationMessageCount;
+    private Beeper beeper;
+
 //    Chatroom(User me, String url, Handler handler) throws MalformedURLException {
 //        this(me, url, handler, null);
 //    }
@@ -85,6 +94,8 @@ public /*abstract*/ class Chatroom {
                 enter(message);
             }
         });
+
+        beeper = new Beeper(context);
     }
 
 //    public Chatroom with(@Nullable Context context, final ChatroomView chatroomView) {
@@ -116,15 +127,24 @@ public /*abstract*/ class Chatroom {
 //        chatroomView.addMessage(messageView);
 //    }
 
-    private void read(final MessageRelationPair message) {
+    public void setBeeperOn(boolean on) {
+        beeper.setOn(on);
+    }
+
+    private void read(final MessageRelationPair messageRelationPair) {
         chatroomView.post(new Runnable() {
             @Override
             public void run() {
-                MessageView messageView = new MessageView(context
-                ).initMessage(message.getMessage(), message.getRelation());
+                MessageView messageView = new MessageView(context)
+                        .initMessage(messageRelationPair.getMessage(),
+                                messageRelationPair.getRelation());
                 chatroomView.addMessage(messageView);
             }
         });
+
+        if (beeper.isOn()) {
+            beeper.beep(messageRelationPair.getMessage());
+        }
     }
 
     public void enter(Message message) {
@@ -161,6 +181,83 @@ public /*abstract*/ class Chatroom {
         }
         return this;
     }
+
+//    public void setAware(boolean aware) {
+//        this.aware = aware;
+//        if (aware) {
+//            initNotificationContent();
+//        }
+//    }
+//
+//    private void initNotificationContent() {
+//        notificationContent = new Notification.InboxStyle()
+//                .setBigContentTitle("Dominion of City Chatroom");
+//        notificationMessageCount = 0;
+////        notificationLayout = new RemoteViews(context.getPackageName(),
+////                R.layout.chatroom_notification_layout);
+//    }
+//
+//    private void initNotification(Context context) {
+//        initNotificationContent();
+////        notificationLayout = new RemoteViews(context.getPackageName(),
+////                R.layout.chatroom_notification_layout);
+//
+//        // Creates an Intent for the Activity
+//        Intent intent = new Intent(context, ChatroomActivity.class)
+//                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+//                        Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(
+//                context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT
+//        );
+//
+//        notificationBuilder = new Notification.Builder(context)
+//                .setSmallIcon(R.color.blue)
+//                .setContentTitle("Dominion of City Chatroom")
+//                .setContentText("New message(s)")
+//                .setDefaults(Notification.DEFAULT_VIBRATE)
+//                .setContentIntent(pendingIntent)
+//                .setAutoCancel(true);
+//
+//        notificationManager = (NotificationManager)
+//                context.getSystemService(NOTIFICATION_SERVICE);
+//        aware = true;
+//    }
+//
+//    private void sendNotification(Message message) {
+//        notificationMessageCount++;
+//        notificationContent.addLine(
+//                String.format("%s: %s",
+//                        message.getSender().getName(),
+//                        message.getContent()
+//                )
+//        ).setSummaryText("you have " + notificationMessageCount
+//                + " message" + ((notificationMessageCount == 1) ? "s" : ""));
+//        notificationBuilder.setStyle(notificationContent);
+//
+////        RemoteViews notificationLine = new RemoteViews(
+////                context.getPackageName(),
+////                R.id.chatroom_notification_line
+////        );
+////        notificationLine.setTextViewText(
+////                R.id.chatroom_notification_sender_name,
+////                message.getSender().getName()
+////        );
+////        notificationLine.setTextViewText(
+////                R.id.chatroom_notification_content,
+////                message.getContent()
+////        );
+////        notificationLine.setTextViewText(
+////                R.id.chatroom_notification_send_time,
+////                Message.dateFormat.format(message.getSendTime())
+////        );
+////        notificationLayout.addView(R.id.chatroom_notification,
+////                notificationLine);
+////        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+////            notificationBuilder.setCustomContentView(notificationLayout);
+////        }
+////        else notificationBuilder.setContent(notificationLayout);
+//        notificationManager.beep(notifyID, notificationBuilder.build());
+//    }
 
     private class Sender extends Thread {
         private URL url;
@@ -442,3 +539,4 @@ class ReceivePacket {
         this.readNo = readNo;
     }
 }
+
