@@ -16,7 +16,7 @@ public class ChatroomActivity extends AppCompatActivity {
 //    private ChatroomView chatroomView;
 //    private Message outMessage;
     private static final String url = "http://come2jp.com/dominion";
-    private static final String SPNAME = "STH";
+    public static final String SPNAME = "STH";
 //    private User me;
 
     @Override
@@ -63,7 +63,7 @@ public class ChatroomActivity extends AppCompatActivity {
             public void run() {
                 try {
                     ConnectionHandler conn = new ConnectionHandler(new URL(url + "/trySession.php"))
-                            .useSession(getSharedPreferences(SPNAME, MODE_PRIVATE));
+                            .useSession(ChatroomActivity.this);
                     conn.post("uid=" + uid + "&rid=" + rid);
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -1,5 +1,6 @@
 package dot.dominionofcity;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -40,6 +41,7 @@ public class ConnectionHandler {
     private String sessionId;
     private SharedPreferences sharedPreferences;
     public static final String SESSION_KEY = "SessionID";
+    public static final String SP_NAME = "SessionCookieStore";
     private HttpURLConnection connection;
     private static final String TAG = "Internet";
 
@@ -61,6 +63,10 @@ public class ConnectionHandler {
         if (null != connection)
             connection.addRequestProperty("Cookie", sessionId);
         return this;
+    }
+
+    public ConnectionHandler useSession(Context context) {
+        return useSession(context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE));
     }
 
     public void setSessionId(String sessionId) {
