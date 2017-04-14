@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Scanner;
@@ -39,9 +40,10 @@ import java.util.Scanner;
 public class ConnectionHandler {
     private String url;
     private String sessionId;
+    private String sessionKey;
     private SharedPreferences sharedPreferences;
-    public static final String SESSION_KEY = "SessionID";
-    public static final String SP_NAME = "SessionCookieStore";
+    private static final String SESSION_KEY_SUFFIX = "SessionID";
+    private static final String SP_NAME = "SessionCookieStore";
     private HttpURLConnection connection;
     private static final String TAG = "Internet";
 
@@ -59,7 +61,20 @@ public class ConnectionHandler {
 
     public ConnectionHandler useSession(SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
-        sessionId = sharedPreferences.getString(SESSION_KEY, "");
+        String host = "";
+        if (null != url) {
+            try {
+                host = new URL(url).getHost();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (null != connection) {
+            host = connection.getURL().getHost();
+        }
+        sessionKey = host + SESSION_KEY_SUFFIX;
+        Log.d(TAG, sessionKey);
+        sessionId = sharedPreferences.getString(sessionKey, "");
         if (null != connection)
             connection.addRequestProperty("Cookie", sessionId);
         return this;
@@ -120,7 +135,7 @@ public class ConnectionHandler {
                 sessionId = sc[0];
                 if (null != sharedPreferences) {
                     sharedPreferences.edit()
-                            .putString(SESSION_KEY, sessionId)
+                            .putString(sessionKey, sessionId)
                             .apply();
                 }
             }
