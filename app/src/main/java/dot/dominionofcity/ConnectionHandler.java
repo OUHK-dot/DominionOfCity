@@ -73,7 +73,6 @@ public class ConnectionHandler {
             host = connection.getURL().getHost();
         }
         sessionKey = host + SESSION_KEY_SUFFIX;
-        Log.d(TAG, sessionKey);
         sessionId = sharedPreferences.getString(sessionKey, "");
         if (null != connection)
             connection.addRequestProperty("Cookie", sessionId);
