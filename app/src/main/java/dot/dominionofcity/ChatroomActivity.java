@@ -16,7 +16,7 @@ public class ChatroomActivity extends AppCompatActivity {
 //    private ChatroomView chatroomView;
 //    private Message outMessage;
     private static final String url = "http://come2jp.com/dominion";
-    public static final String SPNAME = "STH";
+    //public static final String SPNAME = "STH";
 //    private User me;
 
     @Override
@@ -40,8 +40,7 @@ public class ChatroomActivity extends AppCompatActivity {
 //                }
 //            }.with(this, chatroomView);
             chatroom = new Chatroom(this, url,
-                    (ChatroomView) findViewById(R.id.chatroom),
-                    getSharedPreferences(SPNAME, MODE_PRIVATE));
+                    (ChatroomView) findViewById(R.id.chatroom));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

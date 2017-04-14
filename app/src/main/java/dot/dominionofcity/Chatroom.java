@@ -24,7 +24,7 @@ public /*abstract*/ class Chatroom {
     private int receivedNo;
     private String url;
     //private Handler handler;
-    private SharedPreferences sharedPref;
+//    private SharedPreferences sharedPref;
     private Context context;
     private ChatroomView chatroomView;
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -60,18 +60,18 @@ public /*abstract*/ class Chatroom {
 //        receivedNo = 0;
 //    }
 
-    Chatroom(Context context, String url, ChatroomView chatroomView)
-            throws MalformedURLException {
-        this(context, url, chatroomView, null);
-    }
+//    Chatroom(Context context, String url, ChatroomView chatroomView)
+//            throws MalformedURLException {
+//        this(context, url, chatroomView, null);
+//    }
 
-    Chatroom(Context context, String url, final ChatroomView chatroomView,
-             SharedPreferences sharedPref) throws MalformedURLException {
+    Chatroom(Context context, String url, final ChatroomView chatroomView)
+            throws MalformedURLException {
         Log.i(TAG, "Set up");
         this.context = context;
         this.url = url;
         this.chatroomView = chatroomView;
-        this.sharedPref = sharedPref;
+//        this.sharedPref = sharedPref;
 //        sender = new Sender(url + "/writeMessage.php");
         outMessages = new ArrayList<>();
 //        receiver = new Receiver(url + "/readMessage.php") {
@@ -337,7 +337,7 @@ public /*abstract*/ class Chatroom {
 //            return false;
             ConnectionHandler conn =
                     new ConnectionHandler(url.openConnection())
-                    .useSession(sharedPref);
+                    .useSession(context);
             String response = conn.post(
                     mapper.writeValueAsString(outMessages)
             );
@@ -400,7 +400,7 @@ public /*abstract*/ class Chatroom {
 //            }
 
             ConnectionHandler conn = new ConnectionHandler(url)
-                    .useSession(sharedPref);
+                    .useSession(context);
             String response = conn.get("start=" + receivedNo);
             ReceivePacket packet = mapper.readValue(
                     response,
