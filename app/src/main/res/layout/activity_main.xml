@@ -7,7 +7,6 @@
     tools:context="dot.dominionofcity.MainActivity">
 
         <EditText
-            android:id="@+id/editText3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/_20002"
@@ -39,7 +38,6 @@
             android:layout_toEndOf="@+id/editText" />
 
         <TextView
-            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/room"
@@ -61,7 +59,6 @@
             android:layout_toEndOf="@+id/textView2" />
 
         <Button
-            android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="session"
@@ -84,7 +81,6 @@
             android:layout_alignParentStart="true" />
 
     <Button
-        android:id="@+id/Chatroom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Chatroom"
