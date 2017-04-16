@@ -5,8 +5,6 @@ import android.support.annotation.Nullable;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;

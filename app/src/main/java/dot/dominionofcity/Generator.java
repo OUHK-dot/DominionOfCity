@@ -1,7 +1,5 @@
 package dot.dominionofcity;
 
-import java.io.IOException;
-
 /**
  * Created by dixon on 20/1/2017.
  */
