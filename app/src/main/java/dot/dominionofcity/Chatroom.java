@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 
-public class Chatroom {
-    private Connector connector;
+public class Chatroom extends Messager {
+//    private Messager messager;
     private Context context;
     private ChatroomView chatroomView;
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -24,11 +24,13 @@ public class Chatroom {
 
     Chatroom(Context context, String url, final ChatroomView chatroomView)
             throws MalformedURLException {
+        super(context, url);
         Log.i(TAG, "Set up");
         this.context = context;
         this.chatroomView = chatroomView;
-        this.connector = new Connector(context, url);
-        connector.setReceiveListener(new Connector.ReceiveListener() {
+//        this.messager = new Messager(context, url);
+//        messager.setReceiveListener(new Messager.ReceiveListener() {
+        setReceiveListener(new Messager.ReceiveListener() {
             @Override
             public void onReceived(List<JsonNode> messages) throws IOException {
                 for (JsonNode message : messages) {
@@ -48,7 +50,8 @@ public class Chatroom {
                     message.setReceiver(chatroomView.getReceiver());
                 }
                 try {
-                    connector.enter(mapper.writeValueAsString(message));
+//                    messager.enter(mapper.writeValueAsString(message));
+                    enter(mapper.writeValueAsString(message));
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
@@ -78,15 +81,15 @@ public class Chatroom {
         }
     }
 
-    Chatroom on() throws MalformedURLException, InterruptedException {
-        connector.on();
-        return this;
-    }
-
-    Chatroom off() throws InterruptedException {
-        connector.off();
-        return this;
-    }
+//    Chatroom on() throws MalformedURLException, InterruptedException {
+//        messager.on();
+//        return this;
+//    }
+//
+//    Chatroom off() throws InterruptedException {
+//        messager.off();
+//        return this;
+//    }
 
 }
 

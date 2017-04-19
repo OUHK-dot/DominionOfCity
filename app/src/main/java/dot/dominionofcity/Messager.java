@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,21 +17,26 @@ import java.util.List;
 
 enum Status {OK, WARNING, ERROR}
 
-public class Connector {
+public class Messager {
     private Context context;
     private Sender sender;
     private final List<String> messages = new ArrayList<>();
     private Receiver receiver;
+    private long interval = 1000;
     private int receivedNo = 0;
     private String url;
+    private String senderUrl;
+    private String receiverUrl;
     private static final ObjectMapper mapper = new ObjectMapper();
     private ReceiveListener receiveListener;
-    private static final String TAG = "Connector";
+    private static final String TAG = "Messager";
 
-    Connector(Context context, String url) {
+    Messager(Context context, String url) {
         Log.i(TAG, "Set up");
         this.context = context;
         this.url = url;
+        this.senderUrl = url + "/writeMessage.php";
+        this.receiverUrl = url + "/readMessage.php";
     }
 
     public void setReceiveListener(ReceiveListener listener) {
@@ -48,18 +54,47 @@ public class Connector {
         return receiver.getMessages();
     }
 
-    Connector on()
+    public Messager setUrl(String url) {
+        if (this.senderUrl == this.url + "/writeMessage.php")
+            this.senderUrl = url + "/writeMessage.php";
+        if (this.receiverUrl == this.url + "/readMessage.php")
+            this.receiverUrl = url + "/readMessage.php";
+        this.url = url;
+        return this;
+    }
+
+    public Messager setSenderUrl(String senderUrl) {
+        this.senderUrl = senderUrl;
+        return this;
+    }
+
+    public Messager setReceiverUrl(String receiverUrl) {
+        this.receiverUrl = receiverUrl;
+        return this;
+    }
+
+    public Messager setReceivedNo(int receivedNo) {
+        this.receivedNo = receivedNo;
+        return this;
+    }
+
+    public Messager setInterval(long interval) {
+        this.interval = interval;
+        return this;
+    }
+
+    public Messager on()
             throws MalformedURLException, InterruptedException {
         off();
         Log.i(TAG, "Log on");
-        sender = new Sender(url + "/writeMessage.php");
+        sender = new Sender(senderUrl);
         sender.start();
-        receiver = new Receiver(url + "/readMessage.php");
+        receiver = new Receiver(receiverUrl);
         receiver.start();
         return this;
     }
 
-    Connector off() throws InterruptedException {
+    public Messager off() throws InterruptedException {
         Log.i(TAG, "Log off");
         if (null != sender && sender.isOnline()) {
             sender.offline();
@@ -91,10 +126,10 @@ public class Connector {
         @Override
         public void run() {
             while (online) {
-                synchronized (Connector.this.messages) {
-                    if (Connector.this.messages.size() == 0) {
+                synchronized (Messager.this.messages) {
+                    if (Messager.this.messages.size() == 0) {
                         try {
-                            Connector.this.messages.wait(1000);
+                            Messager.this.messages.wait(1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -102,7 +137,7 @@ public class Connector {
                     else {
                         try {
                             if (send())
-                                Connector.this.messages.clear();
+                                Messager.this.messages.clear();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -112,9 +147,9 @@ public class Connector {
         }
 
         void enter(String message) {
-            synchronized (Connector.this.messages) {
-                Connector.this.messages.add(message);
-                Connector.this.messages.notifyAll();
+            synchronized (Messager.this.messages) {
+                Messager.this.messages.add(message);
+                Messager.this.messages.notifyAll();
             }
         }
 
@@ -123,9 +158,9 @@ public class Connector {
                     new ConnectionHandler(url.openConnection())
                             .useSession(context);
 //            String response = conn.post(
-//                    mapper.writeValueAsString(Connector.this.messages)
+//                    mapper.writeValueAsString(Messager.this.messages)
 //            );
-            String response = conn.post(Connector.this.messages.toString());
+            String response = conn.post(Messager.this.messages.toString());
             return !(null == response ||
                     !response.startsWith("{\"status\":\"OK\"}"));
         }
@@ -133,7 +168,6 @@ public class Connector {
 
     private class Receiver extends Thread {
         private String url;
-        private static final int INTERVAL = 1000;
         private Boolean online = true;
         private final List<List<JsonNode>> messages = new ArrayList<>();
 
@@ -158,7 +192,7 @@ public class Connector {
                     e.printStackTrace();
                 }
                 try {
-                    sleep(INTERVAL);
+                    sleep(interval);
                 } catch (InterruptedException ignored) {
                 }
             }
@@ -174,7 +208,7 @@ public class Connector {
             );
             if (null == packet || !packet.getStatus().equals(Status.OK))
                 return;
-            receivedNo = packet.getReadNo();
+            receivedNo = packet.getReceivedNo();
             Log.v(TAG, "Receive-> " + response);
             synchronized (this.messages) {
                 this.messages.add(packet.getMessages());
@@ -202,15 +236,17 @@ public class Connector {
 class ReceivePacket {
     private Status status;
     private List<JsonNode> messages;
-    private int readNo;
+
+    @JsonProperty("readNo")
+    private int receivedNo;
 
     public ReceivePacket() {
     }
 
-    public ReceivePacket(Status status, List<JsonNode> messages, int readNo) {
+    public ReceivePacket(Status status, List<JsonNode> messages, int receivedNo) {
         this.status = status;
         this.messages = messages;
-        this.readNo = readNo;
+        this.receivedNo = receivedNo;
     }
 
     public Status getStatus() {
@@ -230,11 +266,11 @@ class ReceivePacket {
         this.messages = messages;
     }
 
-    public int getReadNo() {
-        return readNo;
+    public int getReceivedNo() {
+        return receivedNo;
     }
 
-    public void setReadNo(int readNo) {
-        this.readNo = readNo;
+    public void setReceivedNo(int receivedNo) {
+        this.receivedNo = receivedNo;
     }
 }
