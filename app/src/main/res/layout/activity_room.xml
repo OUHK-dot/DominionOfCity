@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_room"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="64dp"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="64dp"
+    android:background="@drawable/roombg"
+    tools:context="com.example.tim.mysqldemo.Room">
+
+    <Button
+        android:text="Change Team"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnChangeTeam"
+        android:onClick="OnChangeTeam"
+        android:background="@drawable/my_button_bg"
+        android:textStyle="bold"
+        android:textColor="#BBEEEE"
+        android:layout_marginBottom="136dp"
+        android:layout_alignParentBottom="true" />
+
+    <TextView
+        android:text="A team"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvAteam"
+        android:textStyle="bold"
+        android:textColor="#ccffff"
+        android:textSize="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listA"
+        android:layout_below="@+id/tvAteam">
+
+        <TextView
+            android:layout_width="130dp"
+            android:layout_height="30dp"
+            android:textSize="20dp"
+            android:background="@drawable/player_field"
+            android:textColor="#ccffff"
+            android:id="@+id/tvA1"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="22dp"
+            android:textSize="20dp"
+            android:background="@drawable/player_field"
+            android:gravity="center"
+            android:id="@+id/tvA2"
+            android:textColor="#ccffff"
+            android:layout_alignBaseline="@+id/tvB2"
+            android:layout_alignBottom="@+id/tvB2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="22dp"
+            android:textSize="20dp"
+            android:background="@drawable/player_field"
+            android:gravity="center"
+            android:id="@+id/tvA3"
+            android:textColor="#ccffff"
+            android:layout_alignBaseline="@+id/tvB3"
+            android:layout_alignBottom="@+id/tvB3"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </LinearLayout>
+
+    <TextView
+        android:text="B team"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvBteam"
+        android:textStyle="bold"
+        android:textColor="#ccff99"
+        android:textSize="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/listA"
+        android:layout_toEndOf="@+id/listA"
+        android:layout_marginLeft="45dp"
+        android:layout_marginStart="45dp" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listB"
+        android:layout_below="@+id/tvBteam"
+        android:layout_alignLeft="@+id/tvBteam"
+        android:layout_alignStart="@+id/tvBteam">
+
+        <TextView
+            android:layout_width="130dp"
+            android:layout_height="30dp"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:textColor="#ccff99"
+            android:background="@drawable/player_field2"
+            android:id="@+id/tvB1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:textSize="20dp"
+            android:id="@+id/tvB2"
+            android:background="@drawable/player_field2"
+            android:textColor="#ccff99"
+            android:gravity="center"
+            android:layout_marginTop="22dp"
+            android:layout_below="@+id/listB"
+            android:layout_alignLeft="@+id/listB"
+            android:layout_alignStart="@+id/listB" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:textSize="20dp"
+            android:background="@drawable/player_field2"
+            android:textColor="#ccff99"
+            android:gravity="center"
+            android:id="@+id/tvB3"
+            android:layout_marginTop="22dp"
+            android:layout_below="@+id/tvB2"
+            android:layout_alignLeft="@+id/tvB2"
+            android:layout_alignStart="@+id/tvB2" />
+
+    </LinearLayout>
+
+    <Button
+        android:text="Quit Room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnQuitRoom"
+        android:onClick="onQuitRoom"
+        android:background="@drawable/my_button_bg"
+        android:textStyle="bold"
+        android:textColor="#BBEEEE"
+        android:layout_alignBaseline="@+id/btnChangeTeam"
+        android:layout_alignBottom="@+id/btnChangeTeam"
+        android:layout_toRightOf="@+id/tvAteam"
+        android:layout_toEndOf="@+id/tvAteam" />
+
+    <Button
+        android:text="Start Game"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnStartGame"
+        android:onClick="OnStartGame"
+        android:visibility="invisible"
+        android:background="@drawable/my_button_bg2"
+        android:textStyle="bold"
+        android:textColor="#ffffcc"
+        android:layout_alignBaseline="@+id/btnQuitRoom"
+        android:layout_alignBottom="@+id/btnQuitRoom"
+        android:layout_toRightOf="@+id/btnQuitRoom"
+        android:layout_toEndOf="@+id/btnQuitRoom"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp" />
+
+</RelativeLayout>

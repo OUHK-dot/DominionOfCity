@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:text="point"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/PointTextView"
+        android:layout_marginTop="121dp"
+        android:layout_below="@+id/ScoreTextView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Score:"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ScoreTextView"
+        android:layout_below="@+id/btn_gameover"
+        android:layout_alignLeft="@+id/btn_gameover"
+        android:layout_alignStart="@+id/btn_gameover" />
+
+    <Button
+        android:text="Game over"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_gameover"
+        android:onClick="OnGameOver"
+        android:layout_below="@+id/btn_score"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Show Point Status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_PointStatus"
+        android:onClick="OnShowPointStatus"
+        android:layout_alignBaseline="@+id/btn_gameover"
+        android:layout_alignBottom="@+id/btn_gameover"
+        android:layout_toRightOf="@+id/btn_dom"
+        android:layout_toEndOf="@+id/btn_dom" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/etGeneratorID"
+        android:hint="dominate GeneratorID"
+        android:layout_marginTop="67dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="dominate!"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_dom"
+        android:onClick="OnDominate"
+        android:layout_below="@+id/etGeneratorID"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Show score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_score"
+        android:onClick="OnShowScore"
+        android:layout_below="@+id/etGeneratorID"
+        android:layout_alignRight="@+id/etGeneratorID"
+        android:layout_alignEnd="@+id/etGeneratorID" />
+
+    <TextView
+        android:text="Room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/tvRoom" />
+
+</RelativeLayout>

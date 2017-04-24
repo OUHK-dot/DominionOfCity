@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="7dp"
+    android:background="@drawable/board2">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ivIcon"
+        android:padding="5dp"
+        android:background="@drawable/console" />
+
+    <TextView
+        android:text="A team"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTeamA"
+        android:textColor="#FFFFFF"
+        android:padding="3dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/ivIcon"
+        android:layout_toLeftOf="@+id/btn_join" />
+
+
+    <Button
+        android:text="Join"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_join"
+        android:background="@drawable/my_button_bg2"
+        android:textStyle="bold"
+        android:textColor="#ffffcc"
+        android:layout_marginTop="3dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="B Team"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTeamB"
+        android:textColor="#FFFFFF"
+        android:padding="3dp"
+        android:layout_below="@+id/tvTeamA"
+        android:layout_toLeftOf="@+id/btn_join"
+        android:layout_toRightOf="@+id/ivIcon" />
+
+</RelativeLayout>

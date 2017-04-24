@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_lobby"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/dot"
+    tools:context="com.example.tim.mysqldemo.Lobby">
+
+    <TextView
+        android:text="Welcome to the Lobby, please choose a game room to join or create a new game room."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:id="@+id/tvIntro"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lvRooms"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:layout_above="@+id/btn_createRoom"
+        android:layout_below="@+id/tvIntro"/>
+
+    <Button
+        android:text="Create Room"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/my_button_bg"
+        android:textStyle="bold"
+        android:textColor="#ccffff"
+        android:id="@+id/btn_createRoom"
+        android:onClick="OnCreateGameRoom"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_logout"
+        android:background="@drawable/my_button_bg"
+        android:textStyle="bold"
+        android:textColor="#ccffff"
+        android:onClick="OnLogout"
+        android:layout_marginLeft="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/btn_createRoom"
+        android:layout_toEndOf="@+id/btn_createRoom"
+        android:layout_marginStart="15dp" />
+
+</RelativeLayout>

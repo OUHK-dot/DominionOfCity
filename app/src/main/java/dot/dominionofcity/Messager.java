@@ -31,7 +31,7 @@ public class Messager {
     private ReceiveListener receiveListener;
     private static final String TAG = "Messager";
 
-    Messager(Context context, String url) {
+    public Messager(Context context, String url) {
         Log.i(TAG, "Set up");
         this.context = context;
         this.url = url;

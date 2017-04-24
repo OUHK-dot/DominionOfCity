@@ -10,4 +10,6 @@
     <color name="orange">#FC9</color>
     <color name="green">#CFC</color>
     <color name="magenta">#ECF</color>
+    <color name="black">#000000</color>
+    <color name="red">#FF0000</color>
 </resources>

@@ -1,92 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="dot.dominionofcity.MainActivity">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:paddingLeft="80dp"
+    android:paddingTop="190dp"
+    android:background="@drawable/secu">
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/_20002"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="35dp"
+        app:srcCompat="@drawable/user2"
+        android:id="@+id/imageView3" />
 
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/_2"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/textView"
-            android:layout_toEndOf="@+id/textView" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:id="@+id/etUserName"
+        android:inputType="text"
+        android:textColor="#DDDDDD"
+        android:textColorHint="#BBDBDD"
+        android:layout_height="40dp"
+        android:background="@drawable/edittext_bottom_line"
+        android:hint="Username"
+        android:textSize="22dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/imageView3"
+        android:layout_toEndOf="@+id/imageView3" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/name"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/editText"
-            android:layout_toEndOf="@+id/editText" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/room"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/editText2"
-            android:layout_toEndOf="@+id/editText2" />
-
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dixon"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/textView2"
-            android:layout_toEndOf="@+id/textView2" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="session"
-            android:text="@string/session"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp"
-            android:layout_below="@+id/editText"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/id"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:inputType="textPassword"
+        android:id="@+id/etPassword"
+        android:textSize="22dp"
+        android:textColor="#DDDDDD"
+        android:textColorHint="#BBDBDD"
+        android:background="@drawable/edittext_bottom_line"
+        android:hint="Password"
+        android:layout_below="@+id/etUserName"
+        android:layout_toRightOf="@+id/imageView2"
+        android:layout_toEndOf="@+id/imageView2" />
 
     <Button
+        android:text="Login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Chatroom"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="goToChatroom" />
+        android:layout_gravity="center"
+        android:id="@+id/btnLogin"
+        android:onClick="OnLogin"
+        android:background="@drawable/my_button_bg"
+        android:textStyle="bold"
+        android:textColor="#ccffff"
+        android:layout_below="@+id/etPassword"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="35dp"
+        app:srcCompat="@drawable/pw"
+        android:id="@+id/imageView2"
+        android:layout_below="@+id/etUserName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/btn_reg"
+        android:onClick="OpenReg"
+        android:background="@drawable/my_button_bg"
+        android:textStyle="bold"
+        android:textColor="#ccffff"
+        android:layout_marginLeft="11dp"
+        android:layout_alignBaseline="@+id/btnLogin"
+        android:layout_alignBottom="@+id/btnLogin"
+        android:layout_toRightOf="@+id/btnLogin"
+        android:layout_toEndOf="@+id/btnLogin"
+        android:layout_marginStart="11dp" />
 
 </RelativeLayout>

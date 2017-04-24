@@ -7,9 +7,9 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="dot.dominionofcity.ChatroomActivity" >
+    tools:context="dot.dominionofcity.chatroom.ChatroomActivity" >
 
-    <dot.dominionofcity.ChatroomView
+    <dot.dominionofcity.chatroom.ChatroomView
         android:id="@+id/chatroom"
         android:layout_width="match_parent"
         android:layout_height="380dp"

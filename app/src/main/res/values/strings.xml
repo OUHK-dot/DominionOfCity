@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">Dominion of City</string>
+    <string name="title_activity_register">Register</string>
+    <string name="title_activity_game">Game</string>
+    <string name="title_activity_get_json">GetJSON</string>
+
+    <string name="action_refresh">Refresh</string>
+    <string name="title_activity_waiting_room">WaitingRoom</string>
+
     <string name="send">Send</string>
     <string name="on">On</string>
     <string name="off">Off</string>
@@ -11,6 +18,24 @@
     <string name="id">ID</string>
     <string name="session">Session</string>
     <string name="notify">Notify</string>
+
+    <string name="satelliteList">Satellites</string>
+    <string name="sat_cell">%1$s: %2$d</string>
+    <string name="azimuth">Azimuth</string>
+    <string name="inclination">Inclination</string>
+    <string name="g_accuracy">(G)Accuracy</string>
+    <string name="sight_description">Sight is for aiming the satellites.</string>
+    <string name="_1">1</string>
+    <string name="congratulation">Congratulation</string>
+    <string name="time">You took %1$ds to hack.</string>
+    <string name="good_luck">Good luck next time</string>
+    <string name="play">Play</string>
+    <string name="loading_description">Loading</string>
+    <string name="noise_description">Transmission noise</string>
+    <string name="disconnected_message">Disconnected with satellites</string>
+    <string name="author_tag">By team dot 2017</string>
+    <string name="sight_bg_description">Black background of area out of sight</string>
+
     <string-array name="mode">
         <item>Team</item>
         <item>Room</item>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="70dp"
+    android:paddingTop="190dp"
+    android:background="@drawable/secu" >
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:inputType="textPassword"
+        android:id="@+id/etPassword"
+        android:hint="Password"
+        android:textSize="22dp"
+        android:textColor="#DDDDDD"
+        android:textColorHint="#BBDBDD"
+        android:background="@drawable/edittext_bottom_line"
+        android:layout_below="@+id/etUserName"
+        android:layout_alignLeft="@+id/etUserName"
+        android:layout_alignStart="@+id/etUserName" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:inputType="textPassword"
+        android:textSize="22dp"
+        android:textColor="#DDDDDD"
+        android:textColorHint="#BBDBDD"
+        android:background="@drawable/edittext_bottom_line"
+        android:ems="10"
+        android:id="@+id/etPassword2"
+        android:hint="Confirm Password"
+        android:layout_below="@+id/etPassword"
+        android:layout_alignLeft="@+id/btn_reg"
+        android:layout_alignStart="@+id/btn_reg" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:textSize="22dp"
+        android:textColor="#DDDDDD"
+        android:textColorHint="#BBDBDD"
+        android:background="@drawable/edittext_bottom_line"
+        android:id="@+id/etUserName"
+        android:hint="Name"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_reg"
+        android:onClick="OnReg"
+        android:background="@drawable/my_button_bg"
+        android:textStyle="bold"
+        android:textColor="#ccffff"
+        android:layout_marginTop="14dp"
+        android:layout_below="@+id/etPassword2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout>
