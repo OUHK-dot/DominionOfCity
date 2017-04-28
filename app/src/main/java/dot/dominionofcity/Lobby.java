@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dot.dominionofcity.model.RoomModel;
+import dot.dominionofcity.toollib.ConnectionHandler;
 
 public class Lobby extends AppCompatActivity {
     private ListView lvRooms;
@@ -91,9 +92,10 @@ public class Lobby extends AppCompatActivity {
     }
 
     public void OnLogout(View view){
-        SharedPreferences pref = this.getSharedPreferences("data", MODE_PRIVATE);
-        SharedPreferences.Editor editor=pref.edit();
-        editor.remove("SessionID").commit();
+        this.getSharedPreferences("RememberMe", MODE_PRIVATE)
+                .edit()
+                .remove("SessionID")
+                .apply();
         (Lobby.this).finish();
     }
 

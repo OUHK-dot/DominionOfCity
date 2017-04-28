@@ -27,15 +27,7 @@ import java.util.List;
 
 import dot.dominionofcity.R;
 
-import static dot.dominionofcity.MathTools.decimalFormat;
-import static dot.dominionofcity.satellitehack.SatelliteHackGame.BULLS_EYE;
-import static dot.dominionofcity.satellitehack.SatelliteHackGame.TIME_LIMIT;
-import static dot.dominionofcity.satellitehack.State.ACTIVE;
-import static dot.dominionofcity.satellitehack.State.FAILURE;
-import static dot.dominionofcity.satellitehack.State.OVER;
-import static dot.dominionofcity.satellitehack.State.READY;
-import static dot.dominionofcity.satellitehack.State.SUCCESS;
-import static dot.dominionofcity.satellitehack.State.StateException;
+import static dot.dominionofcity.toollib.MathTools.decimalFormat;
 
 @SuppressWarnings("deprecation")
 public class SatelliteHackActivity extends AppCompatActivity {
@@ -85,11 +77,11 @@ public class SatelliteHackActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.v(UI_TAG, "Resume activity.");
-        if (game.getState().compareTo(OVER) < 0) {
+        if (game.getState().compareTo(State.OVER) < 0) {
             finder.setShowToast(true);
             slaut.on();
         }
-        if (game.getState().equals(ACTIVE)) {
+        if (game.getState().equals(State.ACTIVE)) {
             effect.start();
         }
     }
@@ -99,7 +91,7 @@ public class SatelliteHackActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         Log.v(UI_TAG, "Pause activity.");
-        if (game.getState().compareTo(OVER) >= 0)
+        if (game.getState().compareTo(State.OVER) >= 0)
             finish();
         finder.setShowToast(false);
         slaut.off();
@@ -130,7 +122,7 @@ public class SatelliteHackActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Log.i(UI_TAG, "User is leaving.");
-                        if (game.getState().compareTo(OVER) >= 0)
+                        if (game.getState().compareTo(State.OVER) >= 0)
                             finish();
                         else{
                             gameOver(false, true);
@@ -159,7 +151,7 @@ public class SatelliteHackActivity extends AppCompatActivity {
         //see if any satellite is pointed
         boolean accurate = false;
         for (Satellite sat : game.getSatellites()) {
-            if (sat.getAccuracy() > 1 - BULLS_EYE) {
+            if (sat.getAccuracy() > 1 - SatelliteHackGame.BULLS_EYE) {
                 Log.v(GAME_TAG, "A satellite is hackable.");
                 accurate = true;
                 hackTarget = sat;
@@ -174,12 +166,12 @@ public class SatelliteHackActivity extends AppCompatActivity {
 
     private void initGame() {
         if (null != game.getState())
-            throw new StateException("Game is ready.");
-        game.setState(READY);
+            throw new State.StateException("Game is ready.");
+        game.setState(State.READY);
         Log.i(GAME_TAG, "Loading Satellite Hack.");
 
         //create loading scene by Glide
-        Glide.with(this)
+        Glide.with(SatelliteHackActivity.this)
                 .load(R.drawable.dot_loading_img)
                 .asGif()
                 .crossFade()
@@ -219,8 +211,8 @@ public class SatelliteHackActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            if (game.getState().compareTo(ACTIVE) >= 0)
-                throw new StateException("Game has been started.");
+            if (game.getState().compareTo(State.ACTIVE) >= 0)
+                throw new State.StateException("Game has been started.");
             Log.i(GAME_TAG, "Wait til satellites are ready.");
             while (!finder.isDone()) {
                 try {
@@ -228,7 +220,7 @@ public class SatelliteHackActivity extends AppCompatActivity {
                 } catch (InterruptedException ignored) {}
             }
             slaut.start();
-            game.setState(ACTIVE);
+            game.setState(State.ACTIVE);
             Log.i(GAME_TAG, "Start Satellite Hack.");
             return null;
         }
@@ -242,7 +234,7 @@ public class SatelliteHackActivity extends AppCompatActivity {
                     try {
                         Log.i(GAME_TAG, "Satellite Hack fail.(timer)");
                         gameOver(false);
-                    } catch (StateException e) {
+                    } catch (State.StateException e) {
                         Log.v(GAME_TAG, "Game is over");
                     }
                 }
@@ -250,7 +242,7 @@ public class SatelliteHackActivity extends AppCompatActivity {
                 @Override
                 public void onEvery100ms(long time) {
                     Log.v(GAME_TAG, String.format("%dms left", time));
-                    if (time < TIME_LIMIT / 2)
+                    if (time < SatelliteHackGame.TIME_LIMIT / 2)
                         stopwatch.post(new Runnable() {
                             @Override
                             public void run() {
@@ -259,7 +251,7 @@ public class SatelliteHackActivity extends AppCompatActivity {
                             }
                         });
                 }
-            }).start(TIME_LIMIT);
+            }).start(SatelliteHackGame.TIME_LIMIT);
             game.startTimer();
             releaseLoadingScene();
         }
@@ -286,8 +278,8 @@ public class SatelliteHackActivity extends AppCompatActivity {
 
             @Override
             protected Void doInBackground(Void... aVoid) {
-                if (game.getState().equals(READY))
-                    throw new StateException("Game not started yet");
+                if (game.getState().equals(State.READY))
+                    throw new State.StateException("Game not started yet");
                 if (null == hackTarget)
                     throw new NoTargetException("No hacking target");
                 //try to remove target satellite
@@ -326,15 +318,15 @@ public class SatelliteHackActivity extends AppCompatActivity {
     }
 
     private void gameOver(boolean success, boolean finish) {
-        if (game.getState().compareTo(OVER) >= 0)
+        if (game.getState().compareTo(State.OVER) >= 0)
             return;
         Log.i(GAME_TAG, "Satellite Hack is over.");
-        game.setState(OVER);
+        game.setState(State.OVER);
         game.stopTimer();
 
         if (!success) {
             Log.i(GAME_TAG, "User failed to find all satellites.");
-            game.setState(FAILURE);
+            game.setState(State.FAILURE);
             intent.putExtra(RESULT, false);
             intent.putExtra(TIME, game.getTimeUsed());
             setResult(RESULT_OK, intent);
@@ -364,7 +356,7 @@ public class SatelliteHackActivity extends AppCompatActivity {
         }
         else {
             Log.i(GAME_TAG, "User succeeds.");
-            game.setState(SUCCESS);
+            game.setState(State.SUCCESS);
             intent.putExtra(RESULT, true);
             intent.putExtra(TIME, game.getTimeUsed());
             setResult(RESULT_OK, intent);

@@ -1,4 +1,4 @@
-package dot.dominionofcity;
+package dot.dominionofcity.toollib;
 
 import java.text.DecimalFormat;
 import java.util.List;

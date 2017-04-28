@@ -16,10 +16,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("SessionCookieStore", MODE_PRIVATE);
-        String sessionId = pref.getString("SessionID", "");
-        if(!TextUtils.isEmpty(sessionId)){
-            startActivity(new Intent(MainActivity.this, Lobby.class));
+//        SharedPreferences pref = getApplicationContext().getSharedPreferences("SessionCookieStore", MODE_PRIVATE);
+//        String sessionId = pref.getString("SessionID", "");
+//        if(!TextUtils.isEmpty(sessionId)){
+//            startActivity(new Intent(MainActivity.this, Lobby.class));
+//        }
+        SharedPreferences pref = this.getSharedPreferences(
+                "RememberMe", MODE_PRIVATE);
+        String username = pref.getString("username", "");
+        String password = pref.getString("password", "");
+        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)){
+            BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+            backgroundWorker.execute("login", username, password);
         }
         UserNameEt = (EditText)findViewById(R.id.etUserName);
         PasswordEt = (EditText)findViewById(R.id.etPassword);

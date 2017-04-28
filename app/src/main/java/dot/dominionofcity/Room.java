@@ -24,11 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dot.dominionofcity.model.RoomModel;
+import dot.dominionofcity.toollib.ConnectionHandler;
 
 public class Room extends AppCompatActivity {
     private TextView tvA1,tvA2,tvA3,tvB1,tvB2,tvB3;
     private TextView RoomTextView;
-    private int mInterval = 3000; // 5 seconds by default, can be changed later
+    private int mInterval = 3000; // 3 seconds by default, can be changed later
     private Handler mHandler;
     private Button btn_start;
 
@@ -47,7 +48,6 @@ public class Room extends AppCompatActivity {
         tvB2 = (TextView)findViewById(R.id.tvB2);
         tvB3 = (TextView)findViewById(R.id.tvB3);
         RoomTextView = (TextView)findViewById(R.id.tvRoom);
-        //new SetRoomNumberTask().execute();
         new SetRoomPlayerTask(this).execute();
         new CheckAdminTask(this).execute();
         mHandler = new Handler();
@@ -110,8 +110,6 @@ public class Room extends AppCompatActivity {
                 conHan.useSession(context);
                 String post_data = URLEncoder.encode("LobbyID", "UTF-8") + "=" + URLEncoder.encode(lobbyid, "UTF-8");
                 return conHan.post(post_data);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }return null;
@@ -120,9 +118,7 @@ public class Room extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             if(result.startsWith("success")){
-                Intent intent = new Intent(Room.this, Game.class);
-                startActivity(intent);
-                (Room.this).finish();
+                startGame();
             }
         }
         @Override
@@ -139,23 +135,10 @@ public class Room extends AppCompatActivity {
             conHan.get();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
         }
         new SetRoomPlayerTask(this).execute();
     }
-    /*public class SetRoomNumberTask extends AsyncTask<String,String,String> {
-        @Override
-        protected String doInBackground(String... params) {
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("data", MODE_PRIVATE);
-            String rid = pref.getString("rid", null);
-            return rid;
-        }
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            RoomTextView.setText("Room Number: "+result);
-        }
-    }*/
+
     public class SetRoomPlayerTask extends AsyncTask<String,String,RoomModel> {
         Context context;
         SetRoomPlayerTask(Context ctx) {
@@ -184,9 +167,7 @@ public class Room extends AppCompatActivity {
                 roomModel2.setPlayerA(playerListA);
                 roomModel2.setPlayerB(playerListB);
                 return roomModel2;
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
+            } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
             return null;
@@ -277,8 +258,6 @@ public class Room extends AppCompatActivity {
                 ConnectionHandler conHan = new ConnectionHandler(url);
                 conHan.useSession(context);
                 return conHan.get();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }return null;
@@ -327,8 +306,6 @@ public class Room extends AppCompatActivity {
                 conHan.useSession(context);
                 String result = conHan.get();
                 return result;
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }return null;
@@ -340,15 +317,19 @@ public class Room extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             if(result.startsWith("start")) {
-                Intent intent = new Intent(Room.this, Game.class);
-                startActivity(intent);
-                (Room.this).finish();
+                startGame();
             }
     }
         @Override
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
         }
+    }
+
+    private void startGame() {
+        Intent intent = new Intent(Room.this, Game.class);
+        startActivity(intent);
+        (Room.this).finish();
     }
 
 }

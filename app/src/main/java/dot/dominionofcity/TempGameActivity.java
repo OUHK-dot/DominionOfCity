@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import dot.dominionofcity.chatroom.ChatroomActivity;
+import dot.dominionofcity.toollib.ConnectionHandler;
 
 public class TempGameActivity extends AppCompatActivity {
     private static final String url = "http://come2jp.com/dominion";

@@ -3,7 +3,7 @@ package dot.dominionofcity.satellitehack;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import dot.dominionofcity.MathTools;
+import dot.dominionofcity.toollib.MathTools;
 import dot.dominionofcity.R;
 
 public class GalaxyView extends android.support.v7.widget.AppCompatImageView {

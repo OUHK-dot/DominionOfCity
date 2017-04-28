@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static dot.dominionofcity.MathTools.average;
-import static dot.dominionofcity.MathTools.random;
+import static dot.dominionofcity.toollib.MathTools.average;
+import static dot.dominionofcity.toollib.MathTools.random;
 
 enum State {
     READY, ACTIVE, OVER, SUCCESS, FAILURE;

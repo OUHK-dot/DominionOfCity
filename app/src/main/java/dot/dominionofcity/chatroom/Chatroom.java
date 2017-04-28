@@ -13,10 +13,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 
-import dot.dominionofcity.Messager;
+import dot.dominionofcity.toollib.Messager;
 
 public class Chatroom extends Messager {
-//    private Messager messager;
     private Context context;
     private ChatroomView chatroomView;
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -30,8 +29,17 @@ public class Chatroom extends Messager {
         Log.i(TAG, "Set up");
         this.context = context;
         this.chatroomView = chatroomView;
-//        this.messager = new Messager(context, url);
-//        messager.setReceiveListener(new Messager.ReceiveListener() {
+        this.chatroomView.setToggleListener(new ChatroomView.ToggleListener() {
+            @Override
+            public void onToggle(boolean online) {
+                try {
+                    if (online) on();
+                    else off();
+                } catch (InterruptedException | MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         setReceiveListener(new Messager.ReceiveListener() {
             @Override
             public void onReceived(List<JsonNode> messages) throws IOException {
@@ -52,7 +60,6 @@ public class Chatroom extends Messager {
                     message.setReceiver(chatroomView.getReceiver());
                 }
                 try {
-//                    messager.enter(mapper.writeValueAsString(message));
                     enter(mapper.writeValueAsString(message));
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
@@ -61,6 +68,18 @@ public class Chatroom extends Messager {
         });
 
         beeper = new Beeper(context);
+    }
+
+    @Override
+    public Chatroom on() throws MalformedURLException, InterruptedException {
+        if (!chatroomView.isOnline()) throw new ExplicitOnOffException();
+        return (Chatroom) super.on();
+    }
+
+    @Override
+    public Chatroom off() throws InterruptedException {
+        if (chatroomView.isOnline()) throw new ExplicitOnOffException();
+        return (Chatroom) super.off();
     }
 
     public void setBeeperOn(boolean on) {
@@ -83,16 +102,7 @@ public class Chatroom extends Messager {
         }
     }
 
-//    Chatroom on() throws MalformedURLException, InterruptedException {
-//        messager.on();
-//        return this;
-//    }
-//
-//    Chatroom off() throws InterruptedException {
-//        messager.off();
-//        return this;
-//    }
-
+    public class ExplicitOnOffException extends RuntimeException {}
 }
 
 @JsonIgnoreProperties(ignoreUnknown=true)

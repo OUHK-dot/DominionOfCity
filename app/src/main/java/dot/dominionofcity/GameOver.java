@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import dot.dominionofcity.toollib.ConnectionHandler;
+
 public class GameOver extends AsyncTask<String,Void,String> {
     Context context;
     AlertDialog.Builder builder;

@@ -7,14 +7,16 @@ import android.content.Intent;
 import android.os.AsyncTask;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+
+import dot.dominionofcity.toollib.ConnectionHandler;
 
 public class BackgroundWorker extends AsyncTask<String,Void,String> {
     Context context;
     AlertDialog.Builder builder;
     ConnectionHandler conHan;
+    String username, password;
     BackgroundWorker (Context ctx) {
         context = ctx;
     }
@@ -22,36 +24,29 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
     @Override
     protected String doInBackground(String...params) {
         String type = params[0];
+        username = params[1];
+        password = params[2];
         String login_url = "http://come2jp.com/dominion/login.php";
         String register_url = "http://come2jp.com/dominion/register.php";
-        String dominate_url = "http://come2jp.com/dominion/dominate.php";
         if(type.equals("login")) {
             try {
-                String user_name = params[1];
-                String password = params[2];
                 URL url = new URL(login_url);
                 conHan = new ConnectionHandler(url);
                 conHan.useSession(context);
-                String post_data = URLEncoder.encode("user_name","UTF-8")+"="+URLEncoder.encode(user_name,"UTF-8")+"&"
+                String post_data = URLEncoder.encode("user_name","UTF-8")+"="+URLEncoder.encode(username,"UTF-8")+"&"
                         +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8");
                 return conHan.post(post_data);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else if(type.equals("register")){
             try {
-                String username = params[1];
-                String password = params[2];
                 URL url = new URL(register_url);
                 conHan = new ConnectionHandler(url);
                 conHan.useSession(context);
                 String post_data = URLEncoder.encode("username","UTF-8")+"="+URLEncoder.encode(username,"UTF-8")+"&"
                         +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8");
                 return conHan.post(post_data);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -68,10 +63,14 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
     @Override
     protected void onPostExecute(String result) {
         if(result.startsWith("fail")) {
-
             builder.setMessage(result);
             builder.setNegativeButton("Back",null);
         }else{
+            context.getSharedPreferences("RememberMe", Context.MODE_PRIVATE)
+                    .edit()
+                    .putString("username", username)
+                    .putString("password", password)
+                    .apply();
             builder.setMessage("Success");
             builder.setPositiveButton("Enter Lobby ", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,

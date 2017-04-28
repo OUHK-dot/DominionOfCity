@@ -20,6 +20,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import dot.dominionofcity.satellitehack.SatelliteHackActivity;
+import dot.dominionofcity.toollib.ConnectionHandler;
 
 public class Game extends AppCompatActivity {
     private TextView ScoreTextView;
@@ -45,7 +46,7 @@ public class Game extends AppCompatActivity {
         String GeneratorID = GeneratorIDEt.getText().toString();
         new DominateTask(this).execute(GeneratorID);
         Intent satelliteHack = new Intent(Game.this,
-                dot.dominionofcity.satellitehack.SatelliteHackActivity.class)
+                SatelliteHackActivity.class)
                 .putExtra(SatelliteHackActivity.LEVEL, 2);
         startActivity(satelliteHack);
     }

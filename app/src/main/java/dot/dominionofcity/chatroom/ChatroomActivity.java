@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import dot.dominionofcity.ConnectionHandler;
+import dot.dominionofcity.toollib.ConnectionHandler;
 import dot.dominionofcity.R;
 
 public class ChatroomActivity extends AppCompatActivity {

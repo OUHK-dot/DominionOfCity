@@ -8,9 +8,8 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.util.Log;
 
-import static dot.dominionofcity.MathTools.getCameraAzimuth;
-import static dot.dominionofcity.MathTools.getInclination;
-import static dot.dominionofcity.satellitehack.State.ACTIVE;
+import static dot.dominionofcity.toollib.MathTools.getCameraAzimuth;
+import static dot.dominionofcity.toollib.MathTools.getInclination;
 
 class SensorListenerAndUpdateThread extends Thread
         implements SensorEventListener {
@@ -111,7 +110,7 @@ class SensorListenerAndUpdateThread extends Thread
                     e.printStackTrace();
                 }
             }
-            if (game.getState().equals(ACTIVE)) {
+            if (game.getState().equals(dot.dominionofcity.satellitehack.State.ACTIVE)) {
                 calculate();
                 handler.post(new Runnable() {
                     @Override
@@ -120,7 +119,7 @@ class SensorListenerAndUpdateThread extends Thread
                                 .updateUI(azimuth, inclination);
                     }
                 });
-            } else if (game.getState().compareTo(ACTIVE) > 0)
+            } else if (game.getState().compareTo(dot.dominionofcity.satellitehack.State.ACTIVE) > 0)
                 return;
         }
     }

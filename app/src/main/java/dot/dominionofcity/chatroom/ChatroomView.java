@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -27,6 +28,9 @@ public class ChatroomView extends LinearLayout {
     private User receiver;
     private EditText enterMessage;
     private Button submit;
+    private ImageView toggle;
+    private boolean online = false;
+    private ToggleListener toggleListener;
     private Handler handler;
 
     public ChatroomView(Context context) throws MalformedURLException {
@@ -74,6 +78,16 @@ public class ChatroomView extends LinearLayout {
         receiverName = (TextView) this.findViewById(R.id.receiver);
         enterMessage = (EditText) this.findViewById(R.id.enter_message);
         submit = (Button) this.findViewById(R.id.submit);
+        toggle = (ImageView) this.findViewById(R.id.toggle);
+        toggle.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setOnline(!online);
+                if (null != toggleListener)
+                    toggleListener.onToggle(online);
+            }
+        });
+        toggle.setEnabled(false);
         handler = new Handler();
     }
 
@@ -119,5 +133,27 @@ public class ChatroomView extends LinearLayout {
 
     public void setSubmitListerner(OnClickListener listener) {
         submit.setOnClickListener(listener);
+    }
+
+    public boolean isOnline() {
+        return online;
+    }
+
+    public void setOnline(boolean online) {
+        if (this.online == online) return;
+        this.online = online;
+        if (online)
+            toggle.setImageResource(android.R.drawable.presence_online);
+        else
+            toggle.setImageResource(android.R.drawable.presence_offline);
+    }
+
+    public void setToggleListener(ToggleListener toggleListener) {
+        toggle.setEnabled(true);
+        this.toggleListener = toggleListener;
+    }
+
+    public interface ToggleListener {
+        void onToggle(boolean online) ;
     }
 }

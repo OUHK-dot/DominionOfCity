@@ -1,4 +1,4 @@
-package dot.dominionofcity;
+package dot.dominionofcity.toollib;
 
 import android.content.Context;
 import android.util.Log;
