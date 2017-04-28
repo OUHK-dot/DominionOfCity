@@ -28,7 +28,7 @@ class SensorListenerAndUpdateThread extends Thread
     private float[] r = new float[9];
     private float[] orientations = new float[3];
     private float azimuth, inclination;
-    private final static int SKIP = 6;
+    private final static int SKIP = 0;
     private int count = 0;
     private static final String SENSOR_TAG = "Sensor";
 

@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         String username = pref.getString("username", "");
         String password = pref.getString("password", "");
         if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)){
-            BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+            BackgroundWorker backgroundWorker = new BackgroundWorker(this, this);
             backgroundWorker.execute("login", username, password);
         }
         UserNameEt = (EditText)findViewById(R.id.etUserName);
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder;
         builder= new AlertDialog.Builder(MainActivity.this);
         if(!TextUtils.isEmpty(username)&&!TextUtils.isEmpty(password)) {
-            BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+            BackgroundWorker backgroundWorker = new BackgroundWorker(this, this);
             backgroundWorker.execute(type, username, password);
         }
         else{

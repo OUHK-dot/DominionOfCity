@@ -14,11 +14,16 @@ import dot.dominionofcity.toollib.ConnectionHandler;
 
 public class BackgroundWorker extends AsyncTask<String,Void,String> {
     Context context;
+    MainActivity mainActivity;
     AlertDialog.Builder builder;
     ConnectionHandler conHan;
     String username, password;
     BackgroundWorker (Context ctx) {
         context = ctx;
+    }
+    BackgroundWorker (MainActivity mainActivity, Context context) {
+        this.mainActivity = mainActivity;
+        this.context = context;
     }
 
     @Override
@@ -76,6 +81,7 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                 public void onClick(DialogInterface dialog,
                                     int which) {
                     context.startActivity(new Intent(context, Lobby.class));
+                    mainActivity.finish();
                 }
             });
         }

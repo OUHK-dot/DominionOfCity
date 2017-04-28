@@ -428,7 +428,6 @@ public class SatelliteHackActivity extends AppCompatActivity {
             ((RelativeLayout)
                     (findViewById(R.id.camera).getParent()
             )).removeView(findViewById(R.id.camera));
-            new SurfaceView(null).
             findViewById(R.id.author).setOnLongClickListener(null);
             return false;
         }
