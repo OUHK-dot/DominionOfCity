@@ -1,4 +1,4 @@
-package dot.dominionofcity;
+package dot.dominionofcity.chatroom;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.view.View;
 import java.io.IOException;
 import java.net.URL;
 
-import dot.dominionofcity.chatroom.ChatroomActivity;
+import dot.dominionofcity.R;
 import dot.dominionofcity.toollib.ConnectionHandler;
 
 public class TempGameActivity extends AppCompatActivity {

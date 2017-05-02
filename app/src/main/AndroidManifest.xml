@@ -56,7 +56,7 @@
             android:name=".Room"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".TempGameActivity" />
+        <activity android:name=".chatroom.TempGameActivity" />
         <activity android:name=".chatroom.ChatroomActivity" />
 
         <activity

@@ -252,19 +252,14 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     }
 
     public void Play(View v){
-        int level = -1;
-        int i;
-        for (i = 0; i < this.level.length; i++) {
+        for (int i = 0; i < this.level.length; i++) {
             if (v.equals(crystal[i/crystal.length][i%crystal[0].length])) {
-                level = this.level[i];
+                Intent Dixon = new Intent(this, SatelliteHackActivity.class);
+                Dixon.putExtra("id", i);
+                Dixon.putExtra("level", level[i]);
+                startActivityForResult(Dixon, 0);
                 break;
             }
-        }
-        if (level > -1) {
-            Intent Dixon = new Intent(this, SatelliteHackActivity.class);
-            Dixon.putExtra("id", i);
-            Dixon.putExtra("level", level);
-            startActivityForResult(Dixon, 0);
         }
     }
 

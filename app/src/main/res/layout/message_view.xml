@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:text="Sender name"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="12sp" />
 
     </TableRow>
 
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:text="Content"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/send_time"
@@ -44,6 +44,6 @@
             android:layout_marginStart="5dp"
             android:text="Send time"
             android:textColor="@color/yellow"
-            android:textSize="12sp" />
+            android:textSize="10sp" />
     </TableRow>
 </TableLayout>
