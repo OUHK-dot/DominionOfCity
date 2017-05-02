@@ -70,22 +70,23 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         if(result.startsWith("fail")) {
             builder.setMessage(result);
             builder.setNegativeButton("Back",null);
+            builder.show();
         }else{
             context.getSharedPreferences("RememberMe", Context.MODE_PRIVATE)
                     .edit()
                     .putString("username", username)
                     .putString("password", password)
                     .apply();
-            builder.setMessage("Success");
-            builder.setPositiveButton("Enter Lobby ", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog,
-                                    int which) {
+//            builder.setMessage("Success");
+//            builder.setPositiveButton("Enter Lobby ", new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface dialog,
+//                                    int which) {
                     context.startActivity(new Intent(context, Lobby.class));
-                    mainActivity.finish();
-                }
-            });
+//                    mainActivity.finish();
+//                }
+//            });
         }
-        builder.show();
+//        builder.show();
     }
 
     @Override

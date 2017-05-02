@@ -82,9 +82,9 @@ public class ChatroomView extends LinearLayout {
         toggle.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                setOnline(!online);
+                setOnline(!ChatroomView.this.online);
                 if (null != toggleListener)
-                    toggleListener.onToggle(online);
+                    toggleListener.onToggle(ChatroomView.this.online);
             }
         });
         toggle.setEnabled(false);

@@ -70,18 +70,6 @@ public class Chatroom extends Messager {
         beeper = new Beeper(context);
     }
 
-    @Override
-    public Chatroom on() throws MalformedURLException, InterruptedException {
-        if (!chatroomView.isOnline()) throw new ExplicitOnOffException();
-        return (Chatroom) super.on();
-    }
-
-    @Override
-    public Chatroom off() throws InterruptedException {
-        if (chatroomView.isOnline()) throw new ExplicitOnOffException();
-        return (Chatroom) super.off();
-    }
-
     public void setBeeperOn(boolean on) {
         beeper.setOn(on);
     }

@@ -23,6 +23,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import dot.dominionofcity.game.Crystalization;
 import dot.dominionofcity.model.RoomModel;
 import dot.dominionofcity.toollib.ConnectionHandler;
 
@@ -327,7 +328,7 @@ public class Room extends AppCompatActivity {
     }
 
     private void startGame() {
-        Intent intent = new Intent(Room.this, Game.class);
+        Intent intent = new Intent(Room.this, Crystalization.class);
         startActivity(intent);
         (Room.this).finish();
     }

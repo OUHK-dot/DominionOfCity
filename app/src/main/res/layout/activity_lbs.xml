@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg"
+        android:orientation="vertical"
+        tools:context="dot.dominionofcity.game.Crystalization"
+        android:label="@string/app_name">
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:id="@+id/Score1"
+        android:text="759"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:textColor="#ff00ff"
+        android:textSize="50sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:id="@+id/VS"
+        android:text=" VS "
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:textColor="#ff0000"
+        android:textSize="50sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:id="@+id/Score2"
+        android:text="810"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:textColor="#00ffff"
+        android:textSize="50sp" />
+    </GridLayout>
+    <GridLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:rowCount="4">
+
+        <GridLayout
+            android:id="@+id/aboveGL"
+            android:layout_gravity="fill_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_rowSpan="4"
+            android:columnCount="4"
+            android:rowCount="4">
+            <Button android:id="@+id/crystal00"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
+            <Button android:id="@+id/crystal01"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
+            <Button android:id="@+id/crystal02"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
+            <Button android:id="@+id/crystal03"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
+
+            <Button android:id="@+id/crystal10"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
+            <Button android:id="@+id/crystal11"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
+            <Button android:id="@+id/crystal12"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
+            <Button android:id="@+id/crystal13"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
+
+
+            <Button android:id="@+id/crystal20"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
+            <Button android:id="@+id/crystal21"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
+            <Button android:id="@+id/crystal22"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
+            <Button android:id="@+id/crystal23"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
+
+
+            <Button android:id="@+id/crystal31"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
+            <Button android:id="@+id/crystal32"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
+            <Button android:id="@+id/crystal33"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
+            <Button android:id="@+id/crystal30"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
+
+
+        </GridLayout>
+
+        <GridLayout
+            android:layout_row="3"
+            android:layout_gravity="fill_horizontal"
+            android:layout_height="fill_parent"
+            >
+            <Button
+                android:id="@+id/mapbtn"
+                android:onClick="onMap"
+                android:background="@drawable/mapbtn"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_gravity="fill_horizontal"/>
+        </GridLayout>
+    </GridLayout>
+    <View
+        android:background="#ffffff"
+        android:layout_width="fill_parent"
+        android:layout_height="3dp" />
+
+    <dot.dominionofcity.chatroom.ChatroomView
+        android:id="@+id/chatroom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

@@ -259,16 +259,17 @@ public class Lobby extends AppCompatActivity {
             if (result.equals("fail")) {
                 builder.setMessage(result);
                 builder.setNegativeButton("Back", null);
+                builder.show();
             } else {
-                builder.setMessage("success");
-                builder.setPositiveButton("Enter Game Room", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int which) {
+//                builder.setMessage("success");
+//                builder.setPositiveButton("Enter Game Room", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog,
+//                                        int which) {
                         context.startActivity(new Intent(context, Room.class));
-                    }
-                });
+//                    }
+//                });
             }
-            builder.show();
+//            builder.show();
         }
 
         @Override
@@ -320,16 +321,17 @@ public class Lobby extends AppCompatActivity {
             if (result.equals("fail")) {
                 builder.setMessage(result);
                 builder.setNegativeButton("Back", null);
+                builder.show();
             } else {
-                builder.setMessage("success");
-                builder.setPositiveButton("Enter Game Room", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int which) {
+//                builder.setMessage("success");
+//                builder.setPositiveButton("Enter Game Room", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog,
+//                                        int which) {
                         context.startActivity(new Intent(context, Room.class));
-                    }
-                });
+//                    }
+//                });
             }
-            builder.show();
+//            builder.show();
         }
         @Override
         protected void onProgressUpdate(Void... values) {

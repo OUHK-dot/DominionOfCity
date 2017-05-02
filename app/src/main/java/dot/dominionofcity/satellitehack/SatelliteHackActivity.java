@@ -65,6 +65,7 @@ public class SatelliteHackActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         intent = new Intent();
+        intent.putExtra("id", getIntent().getIntExtra("id", -1));
         Log.v(UI_TAG, "Create activity.");
         setContentView(R.layout.activity_satellite_hack);
         Log.d(UI_TAG, "XML done");
