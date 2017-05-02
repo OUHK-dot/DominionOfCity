@@ -28,7 +28,7 @@ import java.util.List;
 import dot.dominionofcity.R;
 
 import static dot.dominionofcity.toollib.MathTools.decimalFormat;
-
+//
 @SuppressWarnings("deprecation")
 public class SatelliteHackActivity extends AppCompatActivity {
     //log tag
