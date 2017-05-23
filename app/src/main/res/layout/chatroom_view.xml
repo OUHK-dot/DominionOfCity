@@ -48,11 +48,13 @@
             android:layout_weight="1"
             android:inputType="text" />
 
-        <Button
+        <ImageView
             android:id="@+id/submit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/send" />
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:text="@string/send"
+            app:srcCompat="@android:drawable/ic_menu_send" />
 
     </LinearLayout>
 

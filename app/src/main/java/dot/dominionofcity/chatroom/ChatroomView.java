@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,7 +26,7 @@ public class ChatroomView extends LinearLayout {
     private TextView receiverName;
     private User receiver;
     private EditText enterMessage;
-    private Button submit;
+    private ImageView submit;
     private ImageView toggle;
     private boolean online = false;
     private ToggleListener toggleListener;
@@ -77,7 +76,7 @@ public class ChatroomView extends LinearLayout {
         });
         receiverName = (TextView) this.findViewById(R.id.receiver);
         enterMessage = (EditText) this.findViewById(R.id.enter_message);
-        submit = (Button) this.findViewById(R.id.submit);
+        submit = (ImageView) this.findViewById(R.id.submit);
         toggle = (ImageView) this.findViewById(R.id.toggle);
         toggle.setOnClickListener(new OnClickListener() {
             @Override

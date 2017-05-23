@@ -16,8 +16,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -217,7 +219,6 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
 
         //latitudeText.setText("Latitude : " + String.valueOf(location.getLatitude()));
         //longitudeText.setText("Longitude : " + String.valueOf(location.getLongitude()));
-
     }
 
     @Override
@@ -590,5 +591,27 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
         }
+    }
+
+    public void fake(View view) {
+        if (((ToggleButton) view).isChecked()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+            myLatitude = Double.valueOf(((EditText) findViewById(R.id.fake_lat)).getText().toString());
+            myLongitude = Double.valueOf(((EditText) findViewById(R.id.fake_lon)).getText().toString());
+        }
+        else {
+            if (googleApiClient.isConnected()) {
+                requestLocationUpdates();
+            }
+        }
+    }
+
+    public void showLocation() {
+        ((EditText) findViewById(R.id.fake_lat)).setText(String.valueOf(myLatitude), TextView.BufferType.EDITABLE);
+        ((EditText) findViewById(R.id.fake_lon)).setText(String.valueOf(myLongitude), TextView.BufferType.EDITABLE);
+    }
+
+    public void debug(View view) {
+        findViewById(R.id.debug).setVisibility(View.VISIBLE);
     }
 }

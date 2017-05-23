@@ -481,4 +481,8 @@ public class SatelliteHackActivity extends AppCompatActivity {
                 decimalFormat.format(inclination));
     }
 
+    public void cheat(View view) {
+        gameOver(true);
+    }
+
 }

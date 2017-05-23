@@ -38,6 +38,7 @@
         android:layout_gravity="center_horizontal|center_vertical"
         android:textColor="#00ffff"
         android:textSize="50sp" />
+
     </GridLayout>
     <GridLayout
         android:layout_width="fill_parent"
@@ -83,6 +84,7 @@
             android:layout_gravity="fill_horizontal"
             android:layout_height="fill_parent"
             >
+
             <Button
                 android:id="@+id/mapbtn"
                 android:onClick="onMap"
@@ -92,10 +94,62 @@
                 android:layout_gravity="fill_horizontal"/>
         </GridLayout>
     </GridLayout>
+
+    <LinearLayout
+        android:id="@+id/debug"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:weightSum="10">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="GPS"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/fake_lat"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:hint="latitude"
+            android:inputType="number"
+            android:textColor="@color/white"
+            android:textColorHint="@android:color/white" />
+
+        <EditText
+            android:id="@+id/fake_lon"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:hint="longitude"
+            android:inputType="number"
+            android:textColor="@color/white"
+            android:textColorHint="@android:color/white" />
+
+        <ToggleButton
+            android:id="@+id/fake"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:checked="false"
+            android:onClick="fake"
+            android:textOff="Fake"
+            android:textOn="Real" />
+    </LinearLayout>
+
     <View
         android:background="#ffffff"
         android:layout_width="fill_parent"
-        android:layout_height="3dp" />
+        android:layout_height="3dp"
+
+        android:onClick="debug" />
 
     <dot.dominionofcity.chatroom.ChatroomView
         android:id="@+id/chatroom"
