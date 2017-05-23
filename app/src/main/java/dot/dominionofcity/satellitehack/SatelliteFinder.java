@@ -22,7 +22,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+//
 @SuppressWarnings("deprecation")
 //wait until user turn on GPS and then get the satellites
 class SatelliteFinder extends AsyncTask<Void, Void, Void> {
