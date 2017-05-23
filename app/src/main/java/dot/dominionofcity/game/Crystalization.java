@@ -480,7 +480,8 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
                 btnEnable = result;
                 for(int i = 0; i< crystal.length; i++) {
                     for (int j = 0; j < crystal[i].length; j++) {
-                        crystal[i][j].setEnabled(result[i * 4 + j]);
+                        int x = i * 4 + j;
+                        crystal[bridge[x][0]-1][bridge[x][1]-1].setEnabled(result[x]);
                     }
                 }
             }
