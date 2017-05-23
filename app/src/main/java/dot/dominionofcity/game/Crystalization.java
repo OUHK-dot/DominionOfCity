@@ -594,7 +594,7 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     }
 
     public void fake(View view) {
-        if (((ToggleButton) view).isChecked()) {
+        if (!((ToggleButton) view).isChecked()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
             myLatitude = Double.valueOf(((EditText) findViewById(R.id.fake_lat)).getText().toString());
             myLongitude = Double.valueOf(((EditText) findViewById(R.id.fake_lon)).getText().toString());
