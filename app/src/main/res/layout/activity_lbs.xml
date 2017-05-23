@@ -55,26 +55,26 @@
             android:columnCount="4"
             android:rowCount="4">
             <Button android:id="@+id/crystal00"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
-            <Button android:id="@+id/crystal01"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
-            <Button android:id="@+id/crystal02"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
-            <Button android:id="@+id/crystal03"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
+            <Button android:id="@+id/crystal01"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
+            <Button android:id="@+id/crystal02"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
+            <Button android:id="@+id/crystal03"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
 
-            <Button android:id="@+id/crystal10"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
-            <Button android:id="@+id/crystal11"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
-            <Button android:id="@+id/crystal12"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
-            <Button android:id="@+id/crystal13"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
-
-
-            <Button android:id="@+id/crystal20"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
-            <Button android:id="@+id/crystal21"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
-            <Button android:id="@+id/crystal22"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
-            <Button android:id="@+id/crystal23"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
+            <Button android:id="@+id/crystal10"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
+            <Button android:id="@+id/crystal11"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
+            <Button android:id="@+id/crystal12"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
+            <Button android:id="@+id/crystal13"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
 
 
-            <Button android:id="@+id/crystal31"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
-            <Button android:id="@+id/crystal32"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
-            <Button android:id="@+id/crystal33"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
-            <Button android:id="@+id/crystal30"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp"/>
+            <Button android:id="@+id/crystal20"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
+            <Button android:id="@+id/crystal21"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
+            <Button android:id="@+id/crystal22"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
+            <Button android:id="@+id/crystal23"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
+
+
+            <Button android:id="@+id/crystal31"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
+            <Button android:id="@+id/crystal32"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
+            <Button android:id="@+id/crystal33"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
+            <Button android:id="@+id/crystal30"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
 
 
         </GridLayout>
