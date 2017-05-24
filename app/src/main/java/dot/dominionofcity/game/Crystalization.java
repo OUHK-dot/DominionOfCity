@@ -307,13 +307,6 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
             }
         }
     }
-    public void OnSend(View view) {
-        for (int i = 0; i < bridge.length; i++) {
-            int row = bridge[i][0] - 1;
-            int col = bridge[i][1] - 1;
-            crystal[row][col].setText(genInfo.get(i).getGenName());
-        }
-    }
     public void OnShowScore() {
         String score_url = "http://come2jp.com/dominion/showScore.php";
         new GetScoreTask(this).execute(score_url);
@@ -478,27 +471,25 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            //return pass;
             return pass;
         }
 
         protected void onPostExecute(Boolean[] result) {
             super.onPostExecute(result);
-            if(result != btnEnable) {
+            if(!Arrays.equals(result,btnEnable)){
                 btnEnable = result;
                 for(int i = 0; i< crystal.length; i++) {
                     for (int j = 0; j < crystal[i].length; j++) {
-                        crystal[i][j].setEnabled(result[i * 4 + j]);
+                        int x = i * 4 + j;
+                        crystal[bridge[x][0]-1][bridge[x][1]-1].setEnabled(result[x]);
                     }
                 }
             }
-            if(!Arrays.equals(level,aLevel) || !Arrays.equals(level,aLevel)){
+            if(!Arrays.equals(level,aLevel) || !Arrays.equals(crystalTeam,aTeam)){
                 level = aLevel;
                 crystalTeam = aTeam;
                 UpdateCrystal();
-                //setCrystal();
             }
-            crystal[0][0].setEnabled(true);
         }
     }
 
@@ -594,7 +585,7 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     }
 
     public void fake(View view) {
-        if (((ToggleButton) view).isChecked()) {
+        if (!((ToggleButton) view).isChecked()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
             myLatitude = Double.valueOf(((EditText) findViewById(R.id.fake_lat)).getText().toString());
             myLongitude = Double.valueOf(((EditText) findViewById(R.id.fake_lon)).getText().toString());
