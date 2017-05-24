@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ public class Lobby extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
+        new CheckPlayingTask(this).execute();
         lvRooms = (ListView)findViewById(R.id.lvRooms);
         Button btn_logout = (Button)findViewById(R.id.btn_logout);
         String LobbyID = "1";
@@ -91,10 +93,23 @@ public class Lobby extends AppCompatActivity {
         tvIntro.setText("lobby id: "+lid);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            this.getSharedPreferences("RememberMe", MODE_PRIVATE)
+                    .edit()
+                    .clear()
+                    .apply();
+            (Lobby.this).finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
     public void OnLogout(View view){
         this.getSharedPreferences("RememberMe", MODE_PRIVATE)
                 .edit()
-                .remove("SessionID")
+                .clear()
                 .apply();
         (Lobby.this).finish();
     }
@@ -219,6 +234,46 @@ public class Lobby extends AppCompatActivity {
 
             return convertView;
 
+        }
+    }
+
+    public class CheckPlayingTask extends AsyncTask<String, Void, String> {
+        Context context;
+
+        CheckPlayingTask(Context ctx) {
+            context = ctx;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                URL url = new URL("http://come2jp.com/dominion/checkPlaying.php");
+                ConnectionHandler conHan = new ConnectionHandler(url);
+                conHan.useSession(context);
+                String result = conHan.get();
+                return result;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if(result.startsWith("playing")) {
+                context.startActivity(new Intent(context, Room.class));
+            }
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
         }
     }
 
