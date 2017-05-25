@@ -26,37 +26,39 @@
 
     </ScrollView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
-        <TextView
-            android:id="@+id/receiver"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
-        <EditText
-            android:id="@+id/enter_message"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="text" />
+            android:background="@android:drawable/editbox_background_normal"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/submit"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:text="@string/send"
-            app:srcCompat="@android:drawable/ic_menu_send" />
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/receiver"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <EditText
+                android:id="@+id/enter_message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="text" />
+
+            <ImageView
+                android:id="@+id/submit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/send"
+                app:srcCompat="@android:drawable/ic_menu_send" />
+
+        </LinearLayout>
 
 </LinearLayout>
 

@@ -61,7 +61,8 @@
 
         <activity
             android:name=".game.Crystalization"
-            android:label="Crystal"/>
+            android:label="Crystal"
+            android:windowSoftInputMode="stateVisible|adjustPan"/>
         <activity
             android:name=".game.DialogMap"
             android:label="Map"
