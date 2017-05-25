@@ -1,4 +1,4 @@
-package dot.dominionofcity;
+package dot.dominionofcity.game;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import dot.dominionofcity.Game;
 import dot.dominionofcity.toollib.ConnectionHandler;
 
 public class GameOver extends AsyncTask<String,Void,String> {
@@ -35,22 +36,27 @@ public class GameOver extends AsyncTask<String,Void,String> {
     @Override
     protected void onPreExecute() {
         builder= new AlertDialog.Builder(context);
-        builder.setTitle("Game Finish");
+        builder.setTitle("Game Finished");
     }
 
     @Override
     protected void onPostExecute(String result) {
         builder.setMessage(result);
-        if(result.startsWith("Game Finished")) {
-            builder.setPositiveButton("Back to Lobby", new DialogInterface.OnClickListener() {
+        if(result.startsWith("A")) {
+            builder.setMessage("Team A wins!!");
+        }
+        if(result.startsWith("B")) {
+            builder.setMessage("Team B wins!!");
+        }
+        if(result.startsWith("draw")) {
+            builder.setMessage("It is a draw game!");
+        }
+        builder.setNeutralButton("Back to Lobby", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,
                                     int which) {
-                    ((Game) context).finish();
+
                 }
-            });
-        }else{
-            builder.setNegativeButton("Back",null);
-        }
+        });
         builder.show();
     }
 

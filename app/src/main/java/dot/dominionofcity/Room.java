@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -244,12 +245,19 @@ public class Room extends AppCompatActivity {
         }
 
     }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            new QuitRoomTask(this).execute();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
     public void onQuitRoom(View view) {
         new QuitRoomTask(this).execute();
     }
     public class QuitRoomTask extends AsyncTask<String,Void,String> {
         Context context;
-        AlertDialog.Builder builder;
         QuitRoomTask (Context ctx) {
             context = ctx;
         }
@@ -268,24 +276,11 @@ public class Room extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            builder= new AlertDialog.Builder(context);
-            builder.setTitle("Quit Room");
         }
 
         @Override
         protected void onPostExecute(String result) {
-            builder.setMessage(result);
-            if(result.startsWith("fail")) {
-                builder.setNegativeButton("Back",null);
-            }else{
-                builder.setPositiveButton("Back to Lobby", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,
-                                        int which) {
                         ((Room) context).finish();
-                    }
-                });
-            }
-            builder.show();
         }
 
         @Override

@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import dot.dominionofcity.game.GameOver;
 import dot.dominionofcity.satellitehack.SatelliteHackActivity;
 import dot.dominionofcity.toollib.ConnectionHandler;
 
@@ -59,10 +60,10 @@ public class Game extends AppCompatActivity {
         new GetPointTask(this).execute(point_url);
     }
 
-    public void OnGameOver(View view) throws IOException {
-        String gameover_url = "http://come2jp.com/dominion/GameJudgement.php";
-        new GameOver(this).execute(gameover_url);
-    }
+    //public void OnGameOver(View view) throws IOException {
+    //    String gameover_url = "http://come2jp.com/dominion/GameJudgement.php";
+    //    new GameOver(this).execute(gameover_url);
+    //}
 
     public class GetScoreTask extends AsyncTask<String,String,String>{
         Context context;

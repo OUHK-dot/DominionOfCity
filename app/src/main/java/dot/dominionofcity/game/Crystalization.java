@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -31,6 +32,7 @@ import com.google.android.gms.location.LocationServices;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -68,9 +70,13 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     private String[] crystalTeam = {"N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N"};
     static List<GenModel> genInfo = new ArrayList<GenModel>();
     private int mInterval = 3000;
+    private int counter = 0;
     private Handler mHandler;
     private Handler mHandler1;
     private Boolean[] btnEnable= {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
+
+    private int height = 5;
+    private int width = 5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,6 +164,16 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
             try {
                 OnShowScore(); //this function can change value of mInterval.
                 OnStartMonDist();
+                for(int i=0;i<16;i++){
+                    if(win("A",i)||win("B",i)||counter==600){
+                        OnGameOver();
+                        (Crystalization.this).finish();
+                    }
+                }
+                counter++;
+
+            } catch (IOException e) {
+                e.printStackTrace();
             } finally {
                 // 100% guarantee that this always happens, even if,   your update method throws an exception
                 mHandler.postDelayed(mStatusChecker, mInterval);
@@ -605,4 +621,149 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     public void debug(View view) {
         findViewById(R.id.debug).setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public void onBackPressed() {
+    }
+
+    private boolean win(String team, int id) {
+        int col = bridge[id][0]-1;
+        int row = bridge[id][1]-1;
+        //win in any direction
+        return winV(team, col, row, 0, false) ||
+                winH(team, col, row, 0, false) ||
+                winL(team, col, row, 0, false) ||
+                winR(team, col, row, 0, false);
+    }
+    //Win vertically
+    private boolean winV(String team, int col, int row, int connect, boolean reversed){
+        int id = 0;
+        for(int i=0;i<16;i++){
+            if(bridge[i][0]-1==col){
+                if(bridge[i][1]-1==row){
+                    id = i;
+                }
+            }
+        }
+        if (row < 0 || row >= height ||
+                !crystalTeam[id].equals(team)) {
+            if (reversed) return false; //both heads are blocked
+            //one head's blocked, go back
+            return winV(team, col,  (row-connect-1), connect, true);
+        }
+        connect += 1;
+        if (connect == 4) return true;
+        if (!reversed)
+            return winV(team, col,  (row+1), connect, reversed);
+        return winV(team, col,  (row-1), connect, reversed);
+    }
+    //Win horizontally
+    private boolean winH(String team, int col, int row, int connect, boolean reversed){
+        int id = 0;
+        for(int i=0;i<16;i++){
+            if(bridge[i][0]-1==col){
+                if(bridge[i][1]-1==row){
+                    id = i;
+                }
+            }
+        }
+        if (col < 0 || col >= width ||
+                !crystalTeam[id].equals(team)) {
+            if (reversed) return false; //both heads are blocked
+            //one head's blocked, go back
+            return winH(team,  (col-connect-1), row, connect, true);
+        }
+        connect += 1;
+        if (connect == 4) return true;
+        if (!reversed)
+            return winH(team, (col+1), row, connect, reversed);
+        return winH(team, (col-1), row, connect, reversed);
+    }
+    //Win left-diagonally
+    private boolean winL(String team, int col, int row, int connect, boolean reversed){
+        int id = 0;
+        for(int i=0;i<16;i++){
+            if(bridge[i][0]-1==col){
+                if(bridge[i][1]-1==row){
+                    id = i;
+                }
+            }
+        }
+        if (row < 0 || row >= height ||
+                col < 0 || col >= width ||
+                !crystalTeam[id].equals(team)) {
+            if (reversed) return false; //both heads are blocked
+            //one head's blocked, go back
+            return winL(team,  (col+connect+1),  (row-connect-1), connect, true);
+        }
+        connect += 1;
+        if (connect == 4) return true;
+        if (!reversed)
+            return winL(team, (col-1),  (row+1), connect, reversed);
+        return winL(team, (col+1),  (row-1), connect, reversed);
+    }
+    //Win right-diagonally
+    private boolean winR(String team, int col, int row, int connect, boolean reversed){
+        int id = 0;
+        for(int i=0;i<16;i++){
+            if(bridge[i][0]-1==col){
+                if(bridge[i][1]-1==row){
+                    id = i;
+                }
+            }
+        }
+        if (row < 0 || row >= height ||
+                col < 0 || col >= width ||
+                !crystalTeam[id].equals(team)) {
+            if (reversed) return false; //both heads are blocked
+            //one head's blocked, go back
+            return winR(team,  (col-connect-1),  (row-connect-1), connect, true);
+        }
+        connect += 1;
+        if (connect == 4) return true;
+        if (!reversed)
+            return winR(team,  (col+1),  (row+1), connect, reversed);
+        return winR(team,  (col-1),  (row-1), connect, reversed);
+    }
+
+    public void OnGameOver() throws IOException {
+        String gameover_url = "http://come2jp.com/dominion/GameJudgement.php";
+        new GameOver(this).execute(gameover_url);
+    }
+
+    public class GameOver extends AsyncTask<String,Void,String> {
+        Context context;
+        GameOver (Context ctx) {
+            context = ctx;
+        }
+        @Override
+        protected String doInBackground(String... params) {
+            String gameover_url = params[0];
+            try {
+                URL url = new URL(gameover_url);
+                ConnectionHandler conHan = new ConnectionHandler(url);
+                conHan.useSession(context);
+                return conHan.get();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+    }
+
 }
