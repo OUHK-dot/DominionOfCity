@@ -71,10 +71,16 @@
             <Button android:id="@+id/crystal23"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
 
 
+            <Button
+                android:id="@+id/crystal30"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/g1"
+                android:onClick="Play" />
+
             <Button android:id="@+id/crystal31"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
             <Button android:id="@+id/crystal32"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
             <Button android:id="@+id/crystal33"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
-            <Button android:id="@+id/crystal30"  android:background="@drawable/g1" android:layout_width="80dp" android:layout_height="80dp" android:onClick="Play"/>
 
 
         </GridLayout>
@@ -103,15 +109,15 @@
         android:visibility="gone"
         android:weightSum="10">
 
-        <TextView
-            android:id="@+id/textView4"
+        <EditText
+            android:id="@+id/fake_location"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:gravity="center"
-            android:text="GPS"
+            android:hint="Location"
+            android:inputType="text"
             android:textColor="@color/white"
-            android:textSize="30sp" />
+            android:textColorHint="@android:color/white" />
 
         <EditText
             android:id="@+id/fake_lat"

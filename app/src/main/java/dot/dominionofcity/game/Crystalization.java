@@ -269,12 +269,14 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     }
 
     public void Play(View v){
-        for (int i = 0; i < this.level.length; i++) {
-            if (v.equals(crystal[i/crystal.length][i%crystal[0].length])) {
-                Intent Dixon = new Intent(this, SatelliteHackActivity.class);
-                Dixon.putExtra("id", i);
-                Dixon.putExtra("level", level[i]);
-                startActivityForResult(Dixon, 0);
+        Button aCrystal;
+        for (int id = 0; id < this.level.length; id++) {
+            aCrystal = crystal[bridge[id][0]-1][bridge[id][1]-1];
+            if (v.equals(aCrystal)) {
+                Intent satHack = new Intent(this, SatelliteHackActivity.class);
+                satHack.putExtra(SatelliteHackActivity.ID, id);
+                satHack.putExtra(SatelliteHackActivity.LEVEL, level[id]);
+                startActivityForResult(satHack, 0);
                 break;
             }
         }
@@ -284,7 +286,7 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (null != data) {
             if (data.getBooleanExtra(SatelliteHackActivity.RESULT, false)) {
-                int id = data.getIntExtra("id", -1);
+                int id = data.getIntExtra(SatelliteHackActivity.ID, -1);
                 if (id > -1) {
                     new DominateTask(Crystalization.this)
                             .execute(String.valueOf(id));
@@ -600,11 +602,16 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
         }
     }
 
+    //backdoor for debug
     public void fake(View view) {
         if (!((ToggleButton) view).isChecked()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
-            myLatitude = Double.valueOf(((EditText) findViewById(R.id.fake_lat)).getText().toString());
-            myLongitude = Double.valueOf(((EditText) findViewById(R.id.fake_lon)).getText().toString());
+            setLocation();
+            try {
+                myLatitude = Double.valueOf(((EditText) findViewById(R.id.fake_lat)).getText().toString());
+                myLongitude = Double.valueOf(((EditText) findViewById(R.id.fake_lon)).getText().toString());
+            }
+            catch (NumberFormatException ignored) {}
         }
         else {
             if (googleApiClient.isConnected()) {
@@ -613,13 +620,24 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
         }
     }
 
-    public void showLocation() {
-        ((EditText) findViewById(R.id.fake_lat)).setText(String.valueOf(myLatitude), TextView.BufferType.EDITABLE);
-        ((EditText) findViewById(R.id.fake_lon)).setText(String.valueOf(myLongitude), TextView.BufferType.EDITABLE);
+    public void setLocation() {
+        String location = ((EditText) findViewById(R.id.fake_location)).getText().toString();
+        if (location.equals("")) return;
+        for (GenModel genModel : genInfo) {
+            if (location.equalsIgnoreCase(genModel.getGenName())) {
+                ((EditText) findViewById(R.id.fake_lat)).setText(String.valueOf(genModel.getLat()), TextView.BufferType.EDITABLE);
+                ((EditText) findViewById(R.id.fake_lon)).setText(String.valueOf(genModel.getLng()), TextView.BufferType.EDITABLE);
+                return;
+            }
+        }
     }
 
+    private int trick = 3;
+
     public void debug(View view) {
-        findViewById(R.id.debug).setVisibility(View.VISIBLE);
+        trick--;
+        if (trick == 0)
+            findViewById(R.id.debug).setVisibility(View.VISIBLE);
     }
 
     @Override

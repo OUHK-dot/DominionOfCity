@@ -38,6 +38,7 @@ public class SatelliteHackActivity extends AppCompatActivity {
     public static final String RESULT = "SatelliteHackResult";
     public static final String TIME = "SatelliteHackTime";
     public static final String LEVEL = "Level";
+    public static final String ID = "id";
 
     //game managers
     private Handler handler = new Handler();
@@ -65,7 +66,7 @@ public class SatelliteHackActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         intent = new Intent();
-        intent.putExtra("id", getIntent().getIntExtra("id", -1));
+        intent.putExtra(ID, getIntent().getIntExtra(ID, -1));
         Log.v(UI_TAG, "Create activity.");
         setContentView(R.layout.activity_satellite_hack);
         Log.d(UI_TAG, "XML done");
@@ -180,9 +181,7 @@ public class SatelliteHackActivity extends AppCompatActivity {
                 .into((ImageView) findViewById(R.id.loading));
 
         //get level and set satellite list
-        game.setLevel(
-                getIntent().getIntExtra(LEVEL, 2)
-        );
+        game.setLevel(getIntent().getIntExtra(LEVEL, 2) + 1);
         finder = new SatelliteFinder(this, this, handler, game);
         finder.execute();
 
