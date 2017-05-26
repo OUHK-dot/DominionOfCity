@@ -49,7 +49,8 @@ class SensorListenerAndUpdateThread extends Thread
     }
 
     void off() {
-        sm.unregisterListener(this);
+        sm.unregisterListener(this, aSensor);
+        sm.unregisterListener(this, mSensor);
     }
 
     @Override

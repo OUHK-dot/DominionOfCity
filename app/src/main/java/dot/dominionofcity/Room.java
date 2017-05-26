@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.squareup.leakcanary.LeakCanary;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +41,9 @@ public class Room extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //trace memory leak
+        LeakCanary.install(getApplication());
+
         setContentView(R.layout.activity_room);
         btn_start = (Button)findViewById(R.id.btnStartGame);
         Button btn_change = (Button)findViewById(R.id.btnChangeTeam);

@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.lzyzsd.circleprogress.DonutProgress;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.util.List;
 
@@ -65,6 +66,9 @@ public class SatelliteHackActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //trace memory leak
+        LeakCanary.install(getApplication());
+
         intent = new Intent();
         intent.putExtra(ID, getIntent().getIntExtra(ID, -1));
         Log.v(UI_TAG, "Create activity.");

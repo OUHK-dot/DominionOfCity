@@ -27,6 +27,7 @@ import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.squareup.leakcanary.LeakCanary;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -79,6 +80,9 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //trace memory leak
+        LeakCanary.install(getApplication());
+
         setContentView(R.layout.activity_lbs);
         OnGetBridge();
         OnGetGenInfo();
