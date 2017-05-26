@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -56,8 +55,8 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     private FusedLocationProviderApi locationProvider = LocationServices.FusedLocationApi;
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
-    static Double myLatitude;
-    static Double myLongitude;
+    private Double myLatitude;
+    private Double myLongitude;
     static Location lastLocation;
     static double EARTH_RADIUS = 6378137;
     private Button crystal[][] = new Button[4][4];
@@ -138,7 +137,6 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
         param2.width = btnWH;
         Mapbtn.setLayoutParams(param2);
         mHandler = new Handler();
-        startRepeatingTask();
         mHandler1 = new Handler();
         startSettingName();
         googleApiClient = new GoogleApiClient.Builder(this)
@@ -146,56 +144,60 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-
-
-
-
         locationRequest = new LocationRequest();
         locationRequest.setInterval(5 * 1000);
         locationRequest.setFastestInterval(7 * 1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
     }
-    void startRepeatingTask() {
+    public Crystalization(){
+
+    }
+    public double getLat(){
+        return myLatitude;
+    }
+    public double getLng(){
+        return myLongitude;
+    }
+    public void startRepeatingTask() {
         mStatusChecker.run();
     }
-    Runnable mStatusChecker = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                OnShowScore(); //this function can change value of mInterval.
-                OnStartMonDist();
-                for(int i=0;i<16;i++){
-                    if(win("A",i)||win("B",i)||counter==600){
-                        OnGameOver();
-                        (Crystalization.this).finish();
-                    }
-                }
-                counter++;
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                // 100% guarantee that this always happens, even if,   your update method throws an exception
-                mHandler.postDelayed(mStatusChecker, mInterval);
+    Runnable mStatusChecker = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OnShowScore(); //this function can change value of mInterval.
+                    OnStartMonDist();
+                    for (int i = 0; i < 16; i++) {
+                        if (win("A", i) || win("B", i) || counter == 600) {
+                            OnGameOver();
+                            (Crystalization.this).finish();
+                        }
+                    }
+                    counter++;
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    // 100% guarantee that this always happens, even if,   your update method throws an exception
+                    mHandler.postDelayed(mStatusChecker, mInterval);
+                }
             }
-        }
     };
 
     void stopRepeatingTask() {
-        mHandler.removeCallbacks(mStatusChecker);
+            mHandler.removeCallbacks(mStatusChecker);
     }
-
     void startSettingName() {
         settingName.run();
     }
-
     Runnable settingName = new Runnable() {
         @Override
         public void run() {
             try {
                 new setName().execute(); //this function can change value of mInterval.
-
-            } finally {
+            }
+            finally {
                 mHandler1.postDelayed(settingName, mInterval);
             }
         }
@@ -203,6 +205,7 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
 
     void stopSettingName() {
         mHandler1.removeCallbacks(settingName);
+        startRepeatingTask();
     }
 
     @Override
@@ -262,8 +265,9 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
+        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
         googleApiClient.disconnect();
         stopRepeatingTask();
     }
@@ -273,6 +277,9 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
         for (int id = 0; id < this.level.length; id++) {
             aCrystal = crystal[bridge[id][0]-1][bridge[id][1]-1];
             if (v.equals(aCrystal)) {
+                if (crystalTeam[id].equals(team)){
+                    break;
+                }
                 Intent satHack = new Intent(this, SatelliteHackActivity.class);
                 satHack.putExtra(SatelliteHackActivity.ID, id);
                 satHack.putExtra(SatelliteHackActivity.LEVEL, level[id]);
@@ -296,8 +303,6 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     }
 
     public void onMap(View v) {
-
-
         Intent dialogMap = new Intent(getApplicationContext(), DialogMap.class);
         dialogMap.putExtra("Lat", myLatitude.toString());
         dialogMap.putExtra("Lng", myLongitude.toString());
@@ -510,7 +515,6 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
             }
         }
     }
-
     public class getUserTeam extends AsyncTask<Void,Void,String> {
         Context ctx;
         getUserTeam(Context ctx) {
