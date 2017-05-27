@@ -48,7 +48,6 @@
         <activity android:name=".Lobby"
             android:launchMode="singleTask"
             android:label="Lobby"
-            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -61,7 +60,6 @@
         <activity
             android:launchMode="singleTask"
             android:name=".Room"
-            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".chatroom.TempGameActivity" />

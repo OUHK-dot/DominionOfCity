@@ -655,8 +655,8 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     }
 
     private boolean win(String team, int id) {
-        int col = bridge[id][0]-1;
-        int row = bridge[id][1]-1;
+        int row = bridge[id][0]-1;
+        int col = bridge[id][1]-1;
         //win in any direction
         return winV(team, col, row, 0, false) ||
                 winH(team, col, row, 0, false) ||
@@ -667,8 +667,8 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     private boolean winV(String team, int col, int row, int connect, boolean reversed){
         int id = 0;
         for(int i=0;i<16;i++){
-            if(bridge[i][0]-1==col){
-                if(bridge[i][1]-1==row){
+            if(bridge[i][0]-1==row){
+                if(bridge[i][1]-1==col){
                     id = i;
                 }
             }
@@ -689,8 +689,8 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     private boolean winH(String team, int col, int row, int connect, boolean reversed){
         int id = 0;
         for(int i=0;i<16;i++){
-            if(bridge[i][0]-1==col){
-                if(bridge[i][1]-1==row){
+            if(bridge[i][0]-1==row){
+                if(bridge[i][1]-1==col){
                     id = i;
                 }
             }
@@ -711,8 +711,8 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     private boolean winL(String team, int col, int row, int connect, boolean reversed){
         int id = 0;
         for(int i=0;i<16;i++){
-            if(bridge[i][0]-1==col){
-                if(bridge[i][1]-1==row){
+            if(bridge[i][0]-1==row){
+                if(bridge[i][1]-1==col){
                     id = i;
                 }
             }
@@ -734,8 +734,8 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     private boolean winR(String team, int col, int row, int connect, boolean reversed){
         int id = 0;
         for(int i=0;i<16;i++){
-            if(bridge[i][0]-1==col){
-                if(bridge[i][1]-1==row){
+            if(bridge[i][0]-1==row){
+                if(bridge[i][1]-1==col){
                     id = i;
                 }
             }
