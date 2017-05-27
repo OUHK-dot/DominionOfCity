@@ -56,7 +56,7 @@ public class Beeper {
         );
 
         builder = new Notification.Builder(context)
-                .setSmallIcon(R.color.blue)
+                .setSmallIcon(R.drawable.gg1)
                 .setContentTitle("Dominion of City Chatroom")
                 .setContentText("New message(s)")
                 .setDefaults(Notification.DEFAULT_VIBRATE)

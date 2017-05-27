@@ -70,6 +70,12 @@ public class Chatroom extends Messager {
         beeper = new Beeper(context);
     }
 
+    @Override
+    public Messager off() throws InterruptedException {
+        beeper.setOn(false);
+        return super.off();
+    }
+
     public void setBeeperOn(boolean on) {
         beeper.setOn(on);
     }

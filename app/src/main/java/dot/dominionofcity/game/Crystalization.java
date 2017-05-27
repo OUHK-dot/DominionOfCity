@@ -2,6 +2,10 @@ package dot.dominionofcity.game;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -177,7 +181,7 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
                 try {
                     OnShowScore(); //this function can change value of mInterval.
                     OnStartMonDist();
-                    if(counter == 600){
+                    if(counter >= 600){
                         String bgTeam = "draw";
                         OnGameOver(bgTeam);
                         (Crystalization.this).finish();
@@ -286,7 +290,10 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     protected void onStop() {
         super.onStop();
         stopRepeatingTask();
-        chatroom.setBeeperOn(true);
+        try {
+            chatroom.off();
+        } catch (InterruptedException ignored) {
+        }
     }
 
     @Override
@@ -643,7 +650,9 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
         for (GenModel genModel : genInfo) {
             if (location.equalsIgnoreCase(genModel.getGenName())) {
                 ((EditText) findViewById(R.id.fake_lat)).setText(String.valueOf(genModel.getLat()), TextView.BufferType.EDITABLE);
+                myLatitude = genModel.getLat();
                 ((EditText) findViewById(R.id.fake_lon)).setText(String.valueOf(genModel.getLng()), TextView.BufferType.EDITABLE);
+                myLongitude = genModel.getLng();
                 return;
             }
         }
@@ -795,6 +804,7 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
 
         @Override
         protected void onPostExecute(String result) {
+            showResult(result);
         }
 
         @Override
@@ -802,6 +812,48 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
             super.onProgressUpdate(values);
         }
 
+    }
+
+    private void showResult(String result) {
+        if (result == null) return;
+        String title = "Energy has been sent to ally";
+        String message;
+        if (result == "draw") {
+            message = "It's a draw!";
+        }
+        else {
+            message = String.format("Team %s won the race", result);
+        }
+
+        // Creates an Intent for the Activity
+        Intent intent = new Intent(getApplicationContext(), Crystalization.class)
+                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                getApplicationContext(), 0, intent,
+                PendingIntent.FLAG_CANCEL_CURRENT
+        );
+
+        //build notification
+        Notification.Builder builder = new Notification.Builder(getApplicationContext())
+                .setSmallIcon(R.drawable.gg1)
+                .setContentTitle("Dominion of City")
+                .setContentText(title + ". " + message)
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        //notify
+        ((NotificationManager) getApplicationContext()
+                .getSystemService(NOTIFICATION_SERVICE))
+                .notify(23, builder.build());
+
+//        //dialog
+//        new AlertDialog.Builder(Crystalization.this)
+//                .setTitle(title)
+//                .setMessage(message)
+//                .setNegativeButton("Back",null)
+//                .show();
     }
 
 }
