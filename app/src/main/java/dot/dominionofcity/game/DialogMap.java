@@ -1,6 +1,7 @@
 package dot.dominionofcity.game;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,12 +20,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import dot.dominionofcity.R;
-
-import static dot.dominionofcity.game.Crystalization.genInfo;
+import dot.dominionofcity.model.GenModel;
 
 /**
  * Created by user on 15/3/2017.
@@ -33,19 +38,33 @@ import static dot.dominionofcity.game.Crystalization.genInfo;
 public class DialogMap extends AppCompatActivity implements OnMapReadyCallback {
     private double Lat,Lng;
     private LatLng MyPo;
-    private final LatLng[] genCoor = new LatLng[16];
+    private LatLng[] genCoor = new LatLng[16];
     private Marker[] genMarker = new Marker[16];
     private Polygon mMutablePolygon;
     private Circle[] mCircles = new Circle[16];
     private GoogleMap mMap;
-
+    private List<GenModel> GenModelList = new ArrayList<GenModel>();
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_map);
-            for (int i = 0; i < genInfo.size(); i++){
-                genCoor[i] = new LatLng(genInfo.get(i).getLat(), genInfo.get(i).getLng());
+            SharedPreferences pref = this.getSharedPreferences(
+                    "genInfo", MODE_PRIVATE);
+            String genInfoStr = pref.getString("genInfoStr", "");
+            try {
+                JSONArray oriArray = new JSONArray(genInfoStr);
+                for (int i = 0; i < oriArray.length(); i++) {
+                    JSONObject finalObject = oriArray.getJSONObject(i);
+                    GenModel genModel = new GenModel();
+                    genModel.setGenName(finalObject.getString("GeneratorName"));
+                    genModel.setLat(finalObject.getDouble("latitude"));
+                    genModel.setLng(finalObject.getDouble("longitude"));
+                    GenModelList.add(genModel);
+                }
+            }catch (JSONException e){}
 
+            for (int i = 0; i < GenModelList.size(); i++){
+                genCoor[i] = new LatLng(GenModelList.get(i).getLat(), GenModelList.get(i).getLng());
             }
 
             SupportMapFragment mapFragment =
@@ -104,7 +123,7 @@ public class DialogMap extends AppCompatActivity implements OnMapReadyCallback {
                 genMarker[i] = mMap.addMarker(new MarkerOptions()
                         .position(genCoor[i])
                         .icon(BitmapDescriptorFactory.defaultMarker(72))
-                        .title(genInfo.get(i).getGenName()));
+                        .title(GenModelList.get(i).getGenName()));
 
             }
         }
