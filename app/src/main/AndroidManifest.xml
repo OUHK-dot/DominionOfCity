@@ -26,7 +26,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key"/>
         <activity
-            android:noHistory="true"
             android:launchMode="singleTask"
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
@@ -60,6 +59,7 @@
         <activity
             android:launchMode="singleTask"
             android:name=".Room"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".chatroom.TempGameActivity" />
