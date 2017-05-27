@@ -2,7 +2,6 @@ package dot.dominionofcity;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -55,10 +54,27 @@ public class Room extends AppCompatActivity {
         tvB2 = (TextView)findViewById(R.id.tvB2);
         tvB3 = (TextView)findViewById(R.id.tvB3);
         RoomTextView = (TextView)findViewById(R.id.tvRoom);
-        new SetRoomPlayerTask(this).execute();
-        new CheckAdminTask(this).execute();
+        SetRoomPlayerTask srpt1 = new SetRoomPlayerTask(this);
+        srpt1.execute();
+
+        CheckAdminTask cat1 = new CheckAdminTask(this);
+        cat1.execute();
         mHandler = new Handler();
         startRepeatingTask();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startRepeatingTask();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopRepeatingTask();
+
     }
 
     @Override
@@ -70,17 +86,20 @@ public class Room extends AppCompatActivity {
     Runnable mStatusChecker = new Runnable() {
         @Override
         public void run() {
-            try {
-                new SetRoomPlayerTask(getApplicationContext()).execute(); //this function can change value of mInterval.
-                new CheckAdminTask(getApplicationContext()).execute();
-                new StartGameTask(getApplicationContext()).execute();
+            try {   //this function can change value of mInterval.
+                SetRoomPlayerTask srpt2 = new SetRoomPlayerTask(getApplicationContext());
+                srpt2.execute();
+                CheckAdminTask cat2 = new CheckAdminTask(getApplicationContext());
+                cat2.execute();
+                StartGameTask sgt = new StartGameTask(getApplicationContext());
+                sgt.execute();
+
             } finally {
                 // 100% guarantee that this always happens, even if,   your update method throws an exception
                 mHandler.postDelayed(mStatusChecker, mInterval);
             }
         }
     };
-
     void startRepeatingTask() {
         mStatusChecker.run();
     }
@@ -91,7 +110,8 @@ public class Room extends AppCompatActivity {
 
     public void OnStartGame(View view) {
         if(roomModel.getPlayerA().size() == roomModel.getPlayerB().size()){
-            new ChangeStatus(this).execute();
+            ChangeStatus cs = new ChangeStatus(this);
+            cs.execute();
         }
         else{
             AlertDialog.Builder builder;
@@ -253,7 +273,8 @@ public class Room extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            new QuitRoomTask(this).execute();
+            QuitRoomTask qrt = new QuitRoomTask(this);
+            qrt.execute();
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -321,6 +342,7 @@ public class Room extends AppCompatActivity {
         protected void onPostExecute(String result) {
             if(result.startsWith("start")) {
                 startGame();
+                (Room.this).finish();
             }
     }
         @Override
@@ -331,8 +353,8 @@ public class Room extends AppCompatActivity {
 
     private void startGame() {
         Intent intent = new Intent(Room.this, Crystalization.class);
+        stopRepeatingTask();
         startActivity(intent);
-        (Room.this).finish();
     }
 
 }

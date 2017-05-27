@@ -26,6 +26,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key"/>
         <activity
+            android:noHistory="true"
+            android:launchMode="singleTask"
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
@@ -35,6 +37,8 @@
         </activity>
         <activity
             android:name=".Register"
+            android:launchMode="singleTask"
+            android:noHistory="true"
             android:label="@string/title_activity_register"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -42,7 +46,9 @@
             android:label="@string/title_activity_game"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Lobby"
+            android:launchMode="singleTask"
             android:label="Lobby"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -53,24 +59,28 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
+            android:launchMode="singleTask"
             android:name=".Room"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".chatroom.TempGameActivity" />
         <activity android:name=".chatroom.ChatroomActivity" />
 
         <activity
+            android:launchMode="singleTask"
             android:name=".game.Crystalization"
             android:label="Crystal"
-            android:windowSoftInputMode="stateVisible|adjustPan"/>
+            android:windowSoftInputMode="stateVisible|adjustPan"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".game.DialogMap"
             android:label="Map"
-            android:excludeFromRecents="true"
             android:theme="@style/Theme.AppCompat.Dialog"/>
 
         <activity
             android:name=".satellitehack.SatelliteHackActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
     </application>

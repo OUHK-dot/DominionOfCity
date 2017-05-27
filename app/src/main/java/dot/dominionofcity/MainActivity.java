@@ -15,6 +15,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!isTaskRoot()) {
+            final Intent intent = getIntent();
+            if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) && Intent.ACTION_MAIN.equals(intent.getAction())) {
+                finish();
+                return;
+            }
+        }
         setContentView(R.layout.activity_main);
 //        SharedPreferences pref = getApplicationContext().getSharedPreferences("SessionCookieStore", MODE_PRIVATE);
 //        String sessionId = pref.getString("SessionID", "");
@@ -52,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OpenReg(View view){
-        startActivity(new Intent(this, Register.class));
+        Intent intent = new Intent(this, Register.class);
+        startActivity(intent);
     }
     //open game room onclick button
     // /public void OpenGameRoom(View view){

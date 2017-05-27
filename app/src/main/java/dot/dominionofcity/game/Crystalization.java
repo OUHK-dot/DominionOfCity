@@ -2,7 +2,6 @@ package dot.dominionofcity.game;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -49,8 +48,8 @@ import dot.dominionofcity.toollib.ConnectionHandler;
 public class Crystalization extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     private Chatroom chatroom;
 
-    static TextView scoreTextView1;
-    static TextView scoreTextView2;
+    private TextView scoreTextView1;
+    private TextView scoreTextView2;
     private TextView VS;
     private String LED="fonts/LED.ttf";
     private FusedLocationProviderApi locationProvider = LocationServices.FusedLocationApi;
@@ -58,8 +57,8 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     private LocationRequest locationRequest;
     private Double myLatitude;
     private Double myLongitude;
-    static Location lastLocation;
-    static double EARTH_RADIUS = 6378137;
+    private Location lastLocation;
+    private double EARTH_RADIUS = 6378137;
     private Button crystal[][] = new Button[4][4];
     private Button Mapbtn;
     private String team = "N";
@@ -68,7 +67,7 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     private boolean genInfoReady = false;
     private int[] level = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     private String[] crystalTeam = {"N","N","N","N","N","N","N","N","N","N","N","N","N","N","N","N"};
-    static List<GenModel> genInfo = new ArrayList<GenModel>();
+    private List<GenModel> genInfo = new ArrayList<GenModel>();
     private int mInterval = 3000;
     private int counter = 0;
     private Handler mHandler;
@@ -82,11 +81,14 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
         super.onCreate(savedInstanceState);
         //trace memory leak
         LeakCanary.install(getApplication());
-
         setContentView(R.layout.activity_lbs);
+
         OnGetBridge();
         OnGetGenInfo();
-        new getUserTeam(this).execute();
+
+        GetUserTeam gut1 = new GetUserTeam(this);
+        gut1.execute();
+
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         scoreTextView1 = (TextView) findViewById(R.id.Score1);
@@ -156,12 +158,14 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     public Crystalization(){
 
     }
-    public double getLat(){
+    private double getLati(){
         return myLatitude;
     }
-    public double getLng(){
+    private double getLngi(){
         return myLongitude;
     }
+    private void setLati(double Lat){ myLatitude = Lat;}
+    private void setLngi(double Lng){ myLongitude = Lng;}
     public void startRepeatingTask() {
         mStatusChecker.run();
     }
@@ -199,7 +203,8 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
         @Override
         public void run() {
             try {
-                new setName().execute(); //this function can change value of mInterval.
+                SetName sn = new SetName();
+                sn.execute();
             }
             finally {
                 mHandler1.postDelayed(settingName, mInterval);
@@ -209,7 +214,6 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
 
     void stopSettingName() {
         mHandler1.removeCallbacks(settingName);
-        startRepeatingTask();
     }
 
     @Override
@@ -237,8 +241,8 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     @Override
     public void onLocationChanged(Location location) {
         lastLocation = location;
-        myLatitude = lastLocation.getLatitude();
-        myLongitude = lastLocation.getLongitude();
+        setLati(lastLocation.getLatitude());
+        setLngi(lastLocation.getLongitude());
 
         //latitudeText.setText("Latitude : " + String.valueOf(location.getLatitude()));
         //longitudeText.setText("Longitude : " + String.valueOf(location.getLongitude()));
@@ -263,7 +267,11 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     @Override
     protected void onPause() {
         super.onPause();
-        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+        chatroom.setBeeperOn(true);
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
         stopRepeatingTask();
         chatroom.setBeeperOn(true);
     }
@@ -299,8 +307,9 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
             if (data.getBooleanExtra(SatelliteHackActivity.RESULT, false)) {
                 int id = data.getIntExtra(SatelliteHackActivity.ID, -1);
                 if (id > -1) {
-                    new DominateTask(Crystalization.this)
-                            .execute(String.valueOf(id));
+                    DominateTask dt = new DominateTask(Crystalization.this);
+                    dt.execute(String.valueOf(id));
+
                 }
             }
         }
@@ -313,7 +322,7 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
         startActivity(dialogMap);
     }
 
-    public class setName extends AsyncTask<Void,Void,Boolean> {
+    public class SetName extends AsyncTask<Void,Void,Boolean> {
 
         @Override
         protected Boolean doInBackground(Void...params) {
@@ -336,20 +345,25 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     }
     public void OnShowScore() {
         String score_url = "http://come2jp.com/dominion/showScore.php";
-        new GetScoreTask(this).execute(score_url);
+        GetScoreTask gst = new GetScoreTask(this);
+        gst.execute(score_url);
     }
     public void OnGetGenInfo() {
         String getGenInfo_url = "http://come2jp.com/dominion/getGenInfo.php";
-        new GetGenInfo(this,this).execute(getGenInfo_url);
+        GetGenInfo oggi = new GetGenInfo(this,this);
+        oggi.execute(getGenInfo_url);
     }
     public void OnGetBridge() {
         String getBridge_url = "http://come2jp.com/dominion/getBridge.php";
-        new GetBridge(this,this).execute(getBridge_url);
+        GetBridge gb = new GetBridge(this,this);
+        gb.execute(getBridge_url);
     }
     public void OnStartMonDist(){
         String getDist_url = "http://come2jp.com/dominion/showPointStatus.php";
-        new OnMonDistance(this).execute(getDist_url);
+        OnMonDistance omd = new OnMonDistance(this);
+        omd.execute(getDist_url);
     }
+
 
     public class GetBridge extends AsyncTask<String,Void,int[][]> {
         Context context;
@@ -378,17 +392,7 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
                 }
                 return bridgeModel;
             } catch (Exception e) {
-                ee = e;
-                act.runOnUiThread( new Runnable() {
-                    public void run() {
-                        AlertDialog.Builder builder3 = new AlertDialog.Builder((context));
-
-                        builder3.setTitle("e")
-                                .setMessage(ee.toString());
-                        builder3.show();
-                    }
-                });
-
+                e.printStackTrace();
             }
             return null;
         }
@@ -419,6 +423,10 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
                 ConnectionHandler conHan = new ConnectionHandler(url);
                 conHan.useSession(this.ctx);
                 String result = conHan.get();
+                ctx.getSharedPreferences("genInfo", Context.MODE_PRIVATE)
+                        .edit()
+                        .putString("genInfoStr", result)
+                        .apply();
                 JSONArray oriArray = new JSONArray(result);
                 for (int i = 0; i < oriArray.length(); i++) {
                     JSONObject finalObject = oriArray.getJSONObject(i);
@@ -432,16 +440,7 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
                 return GenModelList;
 
             } catch (Exception e) {
-                        ee = e;
-                        act.runOnUiThread( new Runnable() {
-                            public void run() {
-                                AlertDialog.Builder builder3 = new AlertDialog.Builder((ctx));
-
-                                builder3.setTitle("e")
-                                        .setMessage(ee.toString());
-                                builder3.show();
-                            }
-                        });
+                e.printStackTrace();
             }
             return null;
         }
@@ -478,8 +477,8 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
                 }
 
                 if(lastLocation != null) {
-                    double radLat1 = rad(myLatitude);
-                    double radLng1 = rad(myLongitude);
+                    double radLat1 = rad(getLati());
+                    double radLng1 = rad(getLngi());
                     for(int i = 0; i< genInfo.size(); i++) {
                         radLat2 = rad(genInfo.get(i).getLat());
                         a = radLat1 - radLat2;
@@ -519,9 +518,9 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
             }
         }
     }
-    public class getUserTeam extends AsyncTask<Void,Void,String> {
+    public class GetUserTeam extends AsyncTask<Void,Void,String> {
         Context ctx;
-        getUserTeam(Context ctx) {
+        GetUserTeam(Context ctx) {
             this.ctx = ctx;
         }
         @Override
@@ -543,7 +542,9 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
         @Override
         protected void onPostExecute(String result) {
             if(result.equals("N")){
-                new getUserTeam(ctx).execute();
+                GetUserTeam gut2 = new GetUserTeam(ctx);
+                gut2.execute();
+
             } else {
                 team = result;
             }
@@ -593,6 +594,7 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
             }catch (Exception e){
                 e.printStackTrace();
             } finally {
+
             }
             return null;
         }
@@ -754,7 +756,8 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
 
     public void OnGameOver() throws IOException {
         String gameover_url = "http://come2jp.com/dominion/GameJudgement.php";
-        new GameOver(this).execute(gameover_url);
+        GameOver go = new GameOver(this);
+        go.execute(gameover_url);
     }
 
     public class GameOver extends AsyncTask<String,Void,String> {

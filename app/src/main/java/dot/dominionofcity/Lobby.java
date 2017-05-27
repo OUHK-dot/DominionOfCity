@@ -2,7 +2,6 @@ package dot.dominionofcity;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -40,19 +39,21 @@ import dot.dominionofcity.toollib.ConnectionHandler;
 public class Lobby extends AppCompatActivity {
     private ListView lvRooms;
     private TextView tvIntro;
-    String LobbyID = "1";
+    private String LobbyID = "1";
     private int mInterval = 5000; // 5 seconds by default, can be changed later
     private Handler mHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
-        new CheckPlayingTask(this).execute();
+        CheckPlayingTask cpt = new CheckPlayingTask(this);
+        cpt.execute();
         lvRooms = (ListView)findViewById(R.id.lvRooms);
         Button btn_logout = (Button)findViewById(R.id.btn_logout);
         String LobbyID = "1";
         String getroom_url = "http://come2jp.com/dominion/showGameRoom.php?LobbyID=" + LobbyID;
-        new GetGameRoomTask(this).execute(getroom_url);
+        GetGameRoomTask ggrt1 = new GetGameRoomTask(this);
+        ggrt1.execute(getroom_url);
 
         mHandler = new Handler();
         startRepeatingTask();
@@ -61,6 +62,20 @@ public class Lobby extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         stopRepeatingTask();
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startRepeatingTask();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopRepeatingTask();
+
     }
 
     Runnable mStatusChecker = new Runnable() {
@@ -68,7 +83,8 @@ public class Lobby extends AppCompatActivity {
         public void run() {
             try {
                 String getroom_url = "http://come2jp.com/dominion/showGameRoom.php?LobbyID=" + LobbyID;
-                new GetGameRoomTask(getApplicationContext()).execute(getroom_url); //this function can change value of mInterval.
+                GetGameRoomTask ggrt2 = new GetGameRoomTask(getApplicationContext());//this function can change value of mInterval.
+                ggrt2.execute(getroom_url);
             } finally {
                 // 100% guarantee that this always happens, even if,   your update method throws an exception
                 mHandler.postDelayed(mStatusChecker, mInterval);
@@ -128,7 +144,8 @@ public class Lobby extends AppCompatActivity {
                 connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
                 InputStream stream = connection.getInputStream();
-                reader = new BufferedReader(new InputStreamReader(stream));
+                InputStreamReader input = new InputStreamReader(stream);
+                reader = new BufferedReader(input);
                 StringBuffer buffer = new StringBuffer();
                 String line = "";
                 while ((line = reader.readLine()) != null) {
@@ -228,7 +245,8 @@ public class Lobby extends AppCompatActivity {
                     String rid = roomModelList.get(position).getRid();
                     SharedPreferences pref = getApplicationContext().getSharedPreferences("data", MODE_PRIVATE);
                     String uid = pref.getString("uid", null);
-                    new JoinRoomTask(Lobby.this).execute(rid, uid);
+                    JoinRoomTask jrt= new JoinRoomTask(Lobby.this);
+                    jrt.execute(rid, uid);
                 }
             });
 
@@ -267,7 +285,9 @@ public class Lobby extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             if(result.startsWith("playing")) {
-                context.startActivity(new Intent(context, Room.class));
+                //stopRepeatingTask();
+                Intent intent = new Intent(context, Room.class);
+                context.startActivity(intent);
             }
         }
 
@@ -320,7 +340,10 @@ public class Lobby extends AppCompatActivity {
 //                builder.setPositiveButton("Enter Game Room", new DialogInterface.OnClickListener() {
 //                    public void onClick(DialogInterface dialog,
 //                                        int which) {
-                        context.startActivity(new Intent(context, Room.class));
+                        //stopRepeatingTask();
+                        Intent intent= new Intent(context, Room.class);
+
+                        context.startActivity(intent);
 //                    }
 //                });
             }
@@ -336,7 +359,8 @@ public class Lobby extends AppCompatActivity {
     public void OnCreateGameRoom(View view) throws IOException {
         String lobbyid = "1";
         String create_url = "http://come2jp.com/dominion/createGameRoom.php";
-        new CreateRoomTask(this).execute(lobbyid, create_url);
+        CreateRoomTask crt = new CreateRoomTask(this);
+        crt.execute(lobbyid, create_url);
     }
 
     public class JoinRoomTask extends AsyncTask<String, Void, String> {
@@ -382,7 +406,9 @@ public class Lobby extends AppCompatActivity {
 //                builder.setPositiveButton("Enter Game Room", new DialogInterface.OnClickListener() {
 //                    public void onClick(DialogInterface dialog,
 //                                        int which) {
-                        context.startActivity(new Intent(context, Room.class));
+                        //stopRepeatingTask();
+                        Intent intent = new Intent(context, Room.class);
+                        context.startActivity(intent);
 //                    }
 //                });
             }

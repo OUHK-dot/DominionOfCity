@@ -2,7 +2,6 @@ package dot.dominionofcity;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 
@@ -81,7 +80,8 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
 //            builder.setPositiveButton("Enter Lobby ", new DialogInterface.OnClickListener() {
 //                public void onClick(DialogInterface dialog,
 //                                    int which) {
-                    context.startActivity(new Intent(context, Lobby.class));
+                    Intent intent = new Intent(context, Lobby.class);
+                    context.startActivity(intent);
 //                    mainActivity.finish();
 //                }
 //            });
