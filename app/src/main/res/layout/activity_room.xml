@@ -8,8 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="64dp"
-    android:background="@drawable/roombg"
-    tools:context="com.example.tim.mysqldemo.Room">
+    android:background="@drawable/roombg">
 
     <Button
         android:text="Change Team"
@@ -20,7 +19,7 @@
         android:background="@drawable/my_button_bg"
         android:textStyle="bold"
         android:textColor="#BBEEEE"
-        android:layout_marginBottom="136dp"
+        android:layout_marginBottom="106dp"
         android:layout_alignParentBottom="true" />
 
     <TextView
@@ -29,7 +28,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvAteam"
         android:textStyle="bold"
-        android:textColor="#ccffff"
+        android:textColor="#ffa5f7"
         android:textSize="40dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -46,8 +45,8 @@
             android:layout_width="130dp"
             android:layout_height="30dp"
             android:textSize="20dp"
-            android:background="@drawable/player_field"
-            android:textColor="#ccffff"
+            android:background="@drawable/player_field2"
+            android:textColor="#ffa5f7"
             android:id="@+id/tvA1"
             android:gravity="center" />
 
@@ -56,10 +55,10 @@
             android:layout_height="30dp"
             android:layout_marginTop="22dp"
             android:textSize="20dp"
-            android:background="@drawable/player_field"
+            android:background="@drawable/player_field2"
             android:gravity="center"
             android:id="@+id/tvA2"
-            android:textColor="#ccffff"
+            android:textColor="#ffa5f7"
             android:layout_alignBaseline="@+id/tvB2"
             android:layout_alignBottom="@+id/tvB2"
             android:layout_alignParentLeft="true"
@@ -70,10 +69,10 @@
             android:layout_height="30dp"
             android:layout_marginTop="22dp"
             android:textSize="20dp"
-            android:background="@drawable/player_field"
+            android:background="@drawable/player_field2"
             android:gravity="center"
             android:id="@+id/tvA3"
-            android:textColor="#ccffff"
+            android:textColor="#ffa5f7"
             android:layout_alignBaseline="@+id/tvB3"
             android:layout_alignBottom="@+id/tvB3"
             android:layout_alignParentLeft="true"
@@ -87,13 +86,13 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvBteam"
         android:textStyle="bold"
-        android:textColor="#ccff99"
+        android:textColor="#9efdff"
         android:textSize="40dp"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/listA"
         android:layout_toEndOf="@+id/listA"
-        android:layout_marginLeft="45dp"
-        android:layout_marginStart="45dp" />
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -109,8 +108,8 @@
             android:layout_height="30dp"
             android:textSize="20dp"
             android:gravity="center"
-            android:textColor="#ccff99"
-            android:background="@drawable/player_field2"
+            android:textColor="#9efdff"
+            android:background="@drawable/player_field"
             android:id="@+id/tvB1" />
 
         <TextView
@@ -118,8 +117,8 @@
             android:layout_height="30dp"
             android:textSize="20dp"
             android:id="@+id/tvB2"
-            android:background="@drawable/player_field2"
-            android:textColor="#ccff99"
+            android:background="@drawable/player_field"
+            android:textColor="#9efdff"
             android:gravity="center"
             android:layout_marginTop="22dp"
             android:layout_below="@+id/listB"
@@ -130,8 +129,8 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:textSize="20dp"
-            android:background="@drawable/player_field2"
-            android:textColor="#ccff99"
+            android:background="@drawable/player_field"
+            android:textColor="#9efdff"
             android:gravity="center"
             android:id="@+id/tvB3"
             android:layout_marginTop="22dp"
@@ -150,10 +149,11 @@
         android:background="@drawable/my_button_bg"
         android:textStyle="bold"
         android:textColor="#BBEEEE"
+        android:layout_marginLeft="6dp"
         android:layout_alignBaseline="@+id/btnChangeTeam"
         android:layout_alignBottom="@+id/btnChangeTeam"
-        android:layout_toRightOf="@+id/tvAteam"
-        android:layout_toEndOf="@+id/tvAteam" />
+        android:layout_toRightOf="@+id/btnChangeTeam"
+        android:layout_toEndOf="@+id/btnChangeTeam" />
 
     <Button
         android:text="Start Game"
@@ -169,7 +169,7 @@
         android:layout_alignBottom="@+id/btnQuitRoom"
         android:layout_toRightOf="@+id/btnQuitRoom"
         android:layout_toEndOf="@+id/btnQuitRoom"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginStart="16dp" />
 
 </RelativeLayout>
