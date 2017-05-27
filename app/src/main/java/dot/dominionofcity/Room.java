@@ -352,6 +352,7 @@ public class Room extends AppCompatActivity {
 
     private void startGame() {
         Intent intent = new Intent(Room.this, Crystalization.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         stopRepeatingTask();
         startActivity(intent);
     }
