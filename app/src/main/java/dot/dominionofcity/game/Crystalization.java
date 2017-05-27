@@ -246,6 +246,9 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
 
         //latitudeText.setText("Latitude : " + String.valueOf(location.getLatitude()));
         //longitudeText.setText("Longitude : " + String.valueOf(location.getLongitude()));
+        
+        //debug by fake GPS
+        if (fakeGPS) forgeLocation();
     }
 
     @Override
@@ -614,24 +617,17 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
     }
 
     //backdoor for debug
+    private boolean fakeGPS;
     public void fake(View view) {
         if (!((ToggleButton) view).isChecked()) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
-            setLocation();
-            try {
-                myLatitude = Double.valueOf(((EditText) findViewById(R.id.fake_lat)).getText().toString());
-                myLongitude = Double.valueOf(((EditText) findViewById(R.id.fake_lon)).getText().toString());
-            }
-            catch (NumberFormatException ignored) {}
+            fakeGPS = true;
         }
         else {
-            if (googleApiClient.isConnected()) {
-                requestLocationUpdates();
-            }
+            fakeGPS = false;
         }
     }
 
-    public void setLocation() {
+    public void forgeLocation() {
         String location = ((EditText) findViewById(R.id.fake_location)).getText().toString();
         if (location.equals("")) return;
         for (GenModel genModel : genInfo) {
