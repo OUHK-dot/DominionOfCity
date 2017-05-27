@@ -7,6 +7,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -43,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import dot.dominionofcity.Lobby;
 import dot.dominionofcity.R;
 import dot.dominionofcity.chatroom.Chatroom;
 import dot.dominionofcity.chatroom.ChatroomView;
@@ -181,19 +183,18 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
                 try {
                     OnShowScore(); //this function can change value of mInterval.
                     OnStartMonDist();
-                    if(counter >= 600){
+                    if(counter == 600){
                         String bgTeam = "draw";
                         OnGameOver(bgTeam);
-                        (Crystalization.this).finish();
                     }
                     for (int i = 0; i < 16; i++) {
                         if (win("A", i)) {
                             OnGameOver("A");
-                            (Crystalization.this).finish();
+                            break;
                         }
                         if (win("B", i)) {
                             OnGameOver("B");
-                            (Crystalization.this).finish();
+                            break;
                         }
                     }
                     counter++;
@@ -804,6 +805,8 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
 
         @Override
         protected void onPostExecute(String result) {
+            if (result == null) return;
+            stopRepeatingTask();
             showResult(result);
         }
 
@@ -818,7 +821,7 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
         if (result == null) return;
         String title = "Energy has been sent to ally";
         String message;
-        if (result == "draw") {
+        if (result.equals("draw")) {
             message = "It's a draw!";
         }
         else {
@@ -826,7 +829,7 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
         }
 
         // Creates an Intent for the Activity
-        Intent intent = new Intent(getApplicationContext(), Crystalization.class)
+        Intent intent = new Intent(getApplicationContext(), Lobby.class)
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                         Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(
@@ -848,12 +851,23 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
                 .getSystemService(NOTIFICATION_SERVICE))
                 .notify(23, builder.build());
 
-//        //dialog
-//        new AlertDialog.Builder(Crystalization.this)
-//                .setTitle(title)
-//                .setMessage(message)
-//                .setNegativeButton("Back",null)
-//                .show();
+        //dialog
+        AlertDialog dialog = new AlertDialog.Builder(Crystalization.this)
+                .setTitle(title)
+                .setMessage(message)
+                .setNegativeButton("Back to Lobby", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        (Crystalization.this).finish();
+                    }
+                })
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        (Crystalization.this).finish();
+                    }
+                })
+                .show();
     }
 
 }

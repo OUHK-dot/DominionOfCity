@@ -383,7 +383,7 @@ public class SatelliteHackActivity extends AppCompatActivity {
     }
 
     private void releaseGameContent() {
-        Log.i(UI_TAG, "Release loading scene memory");
+        Log.i(UI_TAG, "Release game content memory");
         stopwatch.stop();
         for (ImageView iv : new ImageView[]{
                 galaxy, satellite, sight,
@@ -394,10 +394,11 @@ public class SatelliteHackActivity extends AppCompatActivity {
             iv.setImageDrawable(null);
             iv.setImageBitmap(null);
         }
+        slaut.die();
     }
 
     private void releaseFailScene() {
-        Log.i(UI_TAG, "Release loading scene memory");
+        Log.i(UI_TAG, "Release fail scene memory");
         for (ImageView iv : new ImageView[]{
                 (ImageView) findViewById(R.id.noise),
                 (ImageView) findViewById(R.id.fail_message)}) {

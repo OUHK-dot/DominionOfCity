@@ -11,6 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -44,8 +45,10 @@ public class ConnectionHandler {
     private SharedPreferences sharedPreferences;
     private static final String SESSION_KEY_SUFFIX = "SessionID";
     private static final String SP_NAME = "SessionCookieStore";
+    private static long count = 0;
     private HttpURLConnection connection;
-    private static final String TAG = "Internet";
+    private final String TAG = String.format(Locale.getDefault(),
+            "Internet [%d]", count++);
 
     public ConnectionHandler(String url) {
         this.url = url;
@@ -151,7 +154,7 @@ public class ConnectionHandler {
         }
         scanner.close();
         is.close();
-        Log.v(TAG, response.toString());
+        Log.v(TAG, "RESPONSE-> " + response.toString());
         return response.toString();
     }
 }

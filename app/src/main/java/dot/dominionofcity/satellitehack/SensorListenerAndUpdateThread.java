@@ -22,7 +22,6 @@ class SensorListenerAndUpdateThread extends Thread
     private float[] accelerometerValues = new float[3];
     private float[] magneticFieldValues = new float[3];
     private SatelliteHackActivity app;
-    private Context context;
     private Handler handler;
     private SatelliteHackGame game;
 
@@ -36,7 +35,7 @@ class SensorListenerAndUpdateThread extends Thread
     SensorListenerAndUpdateThread(SatelliteHackActivity app, Handler handler,
                                   SatelliteHackGame game) {
         this.app = app;
-        this.context = app.getApplicationContext();
+        Context context = app.getApplicationContext();
         this.handler = handler;
         this.sm = (SensorManager)
                 context.getSystemService(Context.SENSOR_SERVICE);
@@ -50,9 +49,24 @@ class SensorListenerAndUpdateThread extends Thread
         sm.registerListener(this, mSensor, SENSOR_DELAY);
     }
 
-    void off() {
+    public void off() {
         sm.unregisterListener(this, aSensor);
         sm.unregisterListener(this, mSensor);
+    }
+
+    //garbage collection
+    public void die() {
+        try {
+            SensorListenerAndUpdateThread.this.join();
+        } catch (InterruptedException ignored) {
+        } finally {
+            sm = null;
+            aSensor = null;
+            mSensor = null;
+            app = null;
+            handler = null;
+            game = null;
+        }
     }
 
     @Override
