@@ -76,17 +76,9 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
                     .putString("username", username)
                     .putString("password", password)
                     .apply();
-//            builder.setMessage("Success");
-//            builder.setPositiveButton("Enter Lobby ", new DialogInterface.OnClickListener() {
-//                public void onClick(DialogInterface dialog,
-//                                    int which) {
                     Intent intent = new Intent(context, Lobby.class);
                     context.startActivity(intent);
-//                    mainActivity.finish();
-//                }
-//            });
         }
-//        builder.show();
     }
 
     @Override

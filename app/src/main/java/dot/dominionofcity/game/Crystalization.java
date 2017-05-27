@@ -34,6 +34,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -176,9 +177,18 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
                 try {
                     OnShowScore(); //this function can change value of mInterval.
                     OnStartMonDist();
+                    if(counter == 600){
+                        String bgTeam = "draw";
+                        OnGameOver(bgTeam);
+                        (Crystalization.this).finish();
+                    }
                     for (int i = 0; i < 16; i++) {
-                        if (win("A", i) || win("B", i) || counter == 600) {
-                            OnGameOver();
+                        if (win("A", i)) {
+                            OnGameOver("A");
+                            (Crystalization.this).finish();
+                        }
+                        if (win("B", i)) {
+                            OnGameOver("B");
                             (Crystalization.this).finish();
                         }
                     }
@@ -755,10 +765,10 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
         return winR(team,  (col-1),  (row-1), connect, reversed);
     }
 
-    public void OnGameOver() throws IOException {
+    public void OnGameOver(String winTeam) throws IOException {
         String gameover_url = "http://come2jp.com/dominion/GameJudgement.php";
         GameOver go = new GameOver(this);
-        go.execute(gameover_url);
+        go.execute(gameover_url, winTeam);
     }
 
     public class GameOver extends AsyncTask<String,Void,String> {
@@ -769,11 +779,13 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
         @Override
         protected String doInBackground(String... params) {
             String gameover_url = params[0];
+            String bgTeam = params[1];
             try {
                 URL url = new URL(gameover_url);
                 ConnectionHandler conHan = new ConnectionHandler(url);
                 conHan.useSession(context);
-                return conHan.get();
+                String post_data = URLEncoder.encode("bgTeam","UTF-8")+"="+URLEncoder.encode(bgTeam,"UTF-8");
+                return conHan.post(post_data);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
