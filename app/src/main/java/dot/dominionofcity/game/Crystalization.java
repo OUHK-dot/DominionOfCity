@@ -602,6 +602,7 @@ public class Crystalization extends AppCompatActivity implements GoogleApiClient
         @Override
         protected void onPostExecute(String[] result) {
             super.onPostExecute(result);
+            if (result == null) return;
             scoreTextView1.setText(result[0]);
             scoreTextView2.setText(result[1]);
         }
