@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="support-core-ui-24.2.1">
     <CLASSES>
-      <root url="file://$USER_HOME$/.android/build-cache/735809afa8fd15157f82fcf8f61fa454bed3595f/output/res" />
-      <root url="jar://$USER_HOME$/.android/build-cache/735809afa8fd15157f82fcf8f61fa454bed3595f/output/jars/classes.jar!/" />
-      <root url="jar://$USER_HOME$/.android/build-cache/735809afa8fd15157f82fcf8f61fa454bed3595f/output/jars/libs/internal_impl-24.2.1.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/64faf7c27951a2a1b757903a3119235f5cd8f87b/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/64faf7c27951a2a1b757903a3119235f5cd8f87b/output/jars/libs/internal_impl-24.2.1.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/64faf7c27951a2a1b757903a3119235f5cd8f87b/output/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/AppData/Local/Android/Sdk/extras/android/m2repository/com/android/support/support-core-ui/24.2.1/support-core-ui-24.2.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/AppData/Local/Android/sdk/extras/android/m2repository/com/android/support/support-core-ui/24.2.1/support-core-ui-24.2.1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

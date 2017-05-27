@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,7 +39,6 @@ import dot.dominionofcity.toollib.ConnectionHandler;
 
 public class Lobby extends AppCompatActivity {
     private ListView lvRooms;
-    private TextView tvIntro;
     private String LobbyID = "1";
     private int mInterval = 5000; // 5 seconds by default, can be changed later
     private Handler mHandler;
@@ -49,7 +49,6 @@ public class Lobby extends AppCompatActivity {
         CheckPlayingTask cpt = new CheckPlayingTask(this);
         cpt.execute();
         lvRooms = (ListView)findViewById(R.id.lvRooms);
-        Button btn_logout = (Button)findViewById(R.id.btn_logout);
         String LobbyID = "1";
         String getroom_url = "http://come2jp.com/dominion/showGameRoom.php?LobbyID=" + LobbyID;
         GetGameRoomTask ggrt1 = new GetGameRoomTask(this);
@@ -62,13 +61,11 @@ public class Lobby extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         stopRepeatingTask();
-
     }
     @Override
     protected void onResume() {
         super.onResume();
         startRepeatingTask();
-
     }
 
     @Override
@@ -98,15 +95,6 @@ public class Lobby extends AppCompatActivity {
 
     void stopRepeatingTask() {
         mHandler.removeCallbacks(mStatusChecker);
-    }
-
-    public void setLobby(){
-        SharedPreferences pref = this.getSharedPreferences("data", MODE_PRIVATE);
-        SharedPreferences.Editor editor=pref.edit();
-        editor.putString("lid", "1");
-        String lid = pref.getString("lid", null);
-        tvIntro = (TextView)findViewById(R.id.tvIntro);
-        tvIntro.setText("lobby id: "+lid);
     }
 
     @Override
@@ -402,17 +390,10 @@ public class Lobby extends AppCompatActivity {
                 builder.setNegativeButton("Back", null);
                 builder.show();
             } else {
-//                builder.setMessage("success");
-//                builder.setPositiveButton("Enter Game Room", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog,
-//                                        int which) {
-                        //stopRepeatingTask();
-                        Intent intent = new Intent(context, Room.class);
-                        context.startActivity(intent);
-//                    }
-//                });
+                Intent intent = new Intent(context, Room.class);
+                (Lobby.this).finish();
+                context.startActivity(intent);
             }
-//            builder.show();
         }
         @Override
         protected void onProgressUpdate(Void... values) {

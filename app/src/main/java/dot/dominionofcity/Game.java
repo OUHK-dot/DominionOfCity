@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import dot.dominionofcity.game.GameOver;
 import dot.dominionofcity.satellitehack.SatelliteHackActivity;
 import dot.dominionofcity.toollib.ConnectionHandler;
 

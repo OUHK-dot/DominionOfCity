@@ -74,7 +74,6 @@ public class Room extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         stopRepeatingTask();
-
     }
 
     @Override
@@ -341,8 +340,8 @@ public class Room extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             if(result.startsWith("start")) {
-                startGame();
                 (Room.this).finish();
+                startGame();
             }
     }
         @Override

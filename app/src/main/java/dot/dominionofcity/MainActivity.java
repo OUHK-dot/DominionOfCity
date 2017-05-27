@@ -3,6 +3,7 @@ package dot.dominionofcity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -23,11 +24,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         setContentView(R.layout.activity_main);
-//        SharedPreferences pref = getApplicationContext().getSharedPreferences("SessionCookieStore", MODE_PRIVATE);
-//        String sessionId = pref.getString("SessionID", "");
-//        if(!TextUtils.isEmpty(sessionId)){
-//            startActivity(new Intent(MainActivity.this, Lobby.class));
-//        }
         SharedPreferences pref = this.getSharedPreferences(
                 "RememberMe", MODE_PRIVATE);
         String username = pref.getString("username", "");
@@ -60,11 +56,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void OpenReg(View view){
         Intent intent = new Intent(this, Register.class);
+        (MainActivity.this).finish();
         startActivity(intent);
     }
-    //open game room onclick button
-    // /public void OpenGameRoom(View view){
-    //    startActivity(new Intent(this, Game.class));
-    //}
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
+
 }
 
