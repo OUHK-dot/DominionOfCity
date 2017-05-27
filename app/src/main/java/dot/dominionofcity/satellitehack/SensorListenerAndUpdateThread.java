@@ -21,6 +21,7 @@ class SensorListenerAndUpdateThread extends Thread
             SensorManager.SENSOR_DELAY_GAME;
     private float[] accelerometerValues = new float[3];
     private float[] magneticFieldValues = new float[3];
+    private SatelliteHackActivity app;
     private Context context;
     private Handler handler;
     private SatelliteHackGame game;
@@ -32,9 +33,10 @@ class SensorListenerAndUpdateThread extends Thread
     private int count = 0;
     private static final String SENSOR_TAG = "Sensor";
 
-    SensorListenerAndUpdateThread(Context context, Handler handler,
+    SensorListenerAndUpdateThread(SatelliteHackActivity app, Handler handler,
                                   SatelliteHackGame game) {
-        this.context = context;
+        this.app = app;
+        this.context = app.getApplicationContext();
         this.handler = handler;
         this.sm = (SensorManager)
                 context.getSystemService(Context.SENSOR_SERVICE);
@@ -116,8 +118,7 @@ class SensorListenerAndUpdateThread extends Thread
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        ((SatelliteHackActivity) context)
-                                .updateUI(azimuth, inclination);
+                        app.updateUI(azimuth, inclination);
                     }
                 });
             } else if (game.getState().compareTo(dot.dominionofcity.satellitehack.State.ACTIVE) > 0)
