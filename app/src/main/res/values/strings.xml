@@ -36,7 +36,9 @@
     <string name="disconnected_message">Disconnected with satellites</string>
     <string name="author_tag">By team dot 2017</string>
     <string name="sight_bg_description">Black background of area out of sight</string>
-
+    <string name="VS"> VS </string>
+    <string name="scoreA">999</string>
+    <string name="scoreB">999</string>
     <string-array name="mode">
         <item>Team</item>
         <item>Room</item>

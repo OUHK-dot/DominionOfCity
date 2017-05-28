@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:id="@+id/Score1"
-        android:text="759"
+        android:text="@string/scoreA"
         android:layout_gravity="center_horizontal|center_vertical"
         android:textColor="#ff00ff"
         android:textSize="50sp" />
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:id="@+id/VS"
-        android:text=" VS "
+        android:text="@string/VS"
         android:layout_gravity="center_horizontal|center_vertical"
         android:textColor="#ff0000"
         android:textSize="50sp" />
@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:id="@+id/Score2"
-        android:text="810"
+        android:text="@string/scoreB"
         android:layout_gravity="center_horizontal|center_vertical"
         android:textColor="#00ffff"
         android:textSize="50sp" />
